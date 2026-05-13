@@ -221,6 +221,10 @@
     .badge-em { font-size: 30px; line-height: 1.15; }
     .badge-name { font-size: 10px; font-weight: 700; color: #222; line-height: 1.2; }
     .badge-desc { font-size: 9px; color: #999; line-height: 1.3; }
+    .badge-prog { width: 100%; margin-top: 5px; }
+    .badge-prog-text { font-size: 9px; color: #aaa; margin-bottom: 3px; }
+    .badge-bar { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; }
+    .badge-bar-fill { height: 100%; background: var(--green-dark); border-radius: 2px; }
   </style>
 </head>
 <body>
@@ -580,23 +584,23 @@ function renderCalTab(stats) {
 // ── Badges ────────────────────────────────────────────────────────────────────
 const BADGES = [
   // Score total
-  { id:'b1',  emoji:'🌱', name:'Graine de Princesse', desc:'1ère bonne réponse',    group:'✨ Score total',   req: s => s.total >= 1    },
-  { id:'b2',  emoji:'🌸', name:'Fleur du Palais',     desc:'10 réponses',           group:'✨ Score total',   req: s => s.total >= 10   },
-  { id:'b3',  emoji:'🎀', name:'Damoiselle',          desc:'50 réponses',           group:'✨ Score total',   req: s => s.total >= 50   },
-  { id:'b4',  emoji:'👑', name:'Princesse',           desc:'100 réponses',          group:'✨ Score total',   req: s => s.total >= 100  },
-  { id:'b5',  emoji:'💎', name:'Duchesse',            desc:'250 réponses',          group:'✨ Score total',   req: s => s.total >= 250  },
-  { id:'b6',  emoji:'🏰', name:'Dame du Château',    desc:'500 réponses',          group:'✨ Score total',   req: s => s.total >= 500  },
-  { id:'b7',  emoji:'🦋', name:'Fée des Maths',      desc:'1 000 réponses',        group:'✨ Score total',   req: s => s.total >= 1000 },
-  { id:'b8',  emoji:'👸', name:'Reine des Maths',    desc:'5 000 réponses',        group:'✨ Score total',   req: s => s.total >= 5000 },
+  { id:'b1',  emoji:'🌱', name:'Graine de Princesse', desc:'1ère bonne réponse',    group:'✨ Score total',  req: s => s.total >= 1,    prog: s => ({ cur: s.total,   max: 1    }) },
+  { id:'b2',  emoji:'🌸', name:'Fleur du Palais',     desc:'10 réponses',           group:'✨ Score total',  req: s => s.total >= 10,   prog: s => ({ cur: s.total,   max: 10   }) },
+  { id:'b3',  emoji:'🎀', name:'Damoiselle',          desc:'50 réponses',           group:'✨ Score total',  req: s => s.total >= 50,   prog: s => ({ cur: s.total,   max: 50   }) },
+  { id:'b4',  emoji:'👑', name:'Princesse',           desc:'100 réponses',          group:'✨ Score total',  req: s => s.total >= 100,  prog: s => ({ cur: s.total,   max: 100  }) },
+  { id:'b5',  emoji:'💎', name:'Duchesse',            desc:'250 réponses',          group:'✨ Score total',  req: s => s.total >= 250,  prog: s => ({ cur: s.total,   max: 250  }) },
+  { id:'b6',  emoji:'🏰', name:'Dame du Château',    desc:'500 réponses',          group:'✨ Score total',  req: s => s.total >= 500,  prog: s => ({ cur: s.total,   max: 500  }) },
+  { id:'b7',  emoji:'🦋', name:'Fée des Maths',      desc:'1 000 réponses',        group:'✨ Score total',  req: s => s.total >= 1000, prog: s => ({ cur: s.total,   max: 1000 }) },
+  { id:'b8',  emoji:'👸', name:'Reine des Maths',    desc:'5 000 réponses',        group:'✨ Score total',  req: s => s.total >= 5000, prog: s => ({ cur: s.total,   max: 5000 }) },
   // Régularité
-  { id:'b9',  emoji:'🌷', name:'Fidèle',             desc:'3 jours de suite',      group:'🔥 Régularité',   req: s => s.streak >= 3  },
-  { id:'b10', emoji:'🌺', name:'Assidue',            desc:'7 jours de suite',      group:'🔥 Régularité',   req: s => s.streak >= 7  },
-  { id:'b11', emoji:'🌹', name:'Inébranlable',       desc:'14 jours de suite',     group:'🔥 Régularité',   req: s => s.streak >= 14 },
-  { id:'b12', emoji:'✨', name:'Légende',            desc:'30 jours de suite',     group:'🔥 Régularité',   req: s => s.streak >= 30 },
+  { id:'b9',  emoji:'🌷', name:'Fidèle',             desc:'3 jours de suite',      group:'🔥 Régularité',  req: s => s.streak >= 3,   prog: s => ({ cur: s.streak,  max: 3    }) },
+  { id:'b10', emoji:'🌺', name:'Assidue',            desc:'7 jours de suite',      group:'🔥 Régularité',  req: s => s.streak >= 7,   prog: s => ({ cur: s.streak,  max: 7    }) },
+  { id:'b11', emoji:'🌹', name:'Inébranlable',       desc:'14 jours de suite',     group:'🔥 Régularité',  req: s => s.streak >= 14,  prog: s => ({ cur: s.streak,  max: 14   }) },
+  { id:'b12', emoji:'✨', name:'Légende',            desc:'30 jours de suite',     group:'🔥 Régularité',  req: s => s.streak >= 30,  prog: s => ({ cur: s.streak,  max: 30   }) },
   // Performance
-  { id:'b13', emoji:'⭐', name:'Étoilée',            desc:'10 en un seul jour',    group:'💫 Performance',  req: s => s.bestDay >= 10 },
-  { id:'b14', emoji:'💫', name:'Étincelante',        desc:'20 en un seul jour',    group:'💫 Performance',  req: s => s.bestDay >= 20 },
-  { id:'b15', emoji:'🎇', name:'Éblouissante',       desc:'50 en un seul jour',    group:'💫 Performance',  req: s => s.bestDay >= 50 },
+  { id:'b13', emoji:'⭐', name:'Étoilée',            desc:'10 en un seul jour',    group:'💫 Performance', req: s => s.bestDay >= 10, prog: s => ({ cur: s.bestDay, max: 10   }) },
+  { id:'b14', emoji:'💫', name:'Étincelante',        desc:'20 en un seul jour',    group:'💫 Performance', req: s => s.bestDay >= 20, prog: s => ({ cur: s.bestDay, max: 20   }) },
+  { id:'b15', emoji:'🎇', name:'Éblouissante',       desc:'50 en un seul jour',    group:'💫 Performance', req: s => s.bestDay >= 50, prog: s => ({ cur: s.bestDay, max: 50   }) },
 ];
 
 function renderBadgesTab(stats) {
@@ -604,10 +608,20 @@ function renderBadgesTab(stats) {
   document.getElementById('badges-wrap').innerHTML = groups.map(group => {
     const cards = BADGES.filter(b => b.group === group).map(b => {
       const ok = b.req(stats);
+      let progHtml = '';
+      if (!ok) {
+        const { cur, max } = b.prog(stats);
+        const pct = Math.min(Math.round(cur / max * 100), 100);
+        progHtml = '<div class="badge-prog">'
+          +'<div class="badge-prog-text">'+Math.min(cur, max)+' / '+max+'</div>'
+          +'<div class="badge-bar"><div class="badge-bar-fill" style="width:'+pct+'%"></div></div>'
+          +'</div>';
+      }
       return '<div class="badge-card '+(ok?'unlocked':'locked')+'">'
         +'<div class="badge-em">'+(ok?b.emoji:'🔒')+'</div>'
         +'<div class="badge-name">'+b.name+'</div>'
         +'<div class="badge-desc">'+b.desc+'</div>'
+        +progHtml
         +'</div>';
     }).join('');
     return '<div class="badge-group-title">'+group+'</div><div class="badges-grid">'+cards+'</div>';
