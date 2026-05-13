@@ -1,4 +1,4 @@
-const CACHE = 'calcul-v1';
+const CACHE = 'calcul-v3';
 const ASSETS = ['./', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', e =>
