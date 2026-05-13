@@ -220,6 +220,24 @@
     .badge-prog-text { font-size: 9px; color: #aaa; margin-bottom: 3px; }
     .badge-bar { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; }
     .badge-bar-fill { height: 100%; background: var(--green-dark); border-radius: 2px; }
+
+    /* ── Badge unlock toast ── */
+    #badge-toast {
+      position: fixed; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.85);
+      background: #fff; border-radius: 20px;
+      padding: 24px 28px; text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      z-index: 200; pointer-events: none;
+      opacity: 0; transition: opacity 0.2s ease, transform 0.2s ease;
+      min-width: 220px;
+    }
+    #badge-toast.show {
+      opacity: 1; transform: translate(-50%, -50%) scale(1);
+    }
+    #toast-emoji { font-size: 52px; line-height: 1.1; display: block; margin-bottom: 8px; }
+    #toast-name { font-size: 14px; font-weight: 700; color: var(--green-dark); margin-bottom: 6px; }
+    #toast-msg { font-size: 13px; color: #555; line-height: 1.4; }
   </style>
 </head>
 <body>
@@ -329,18 +347,25 @@
     </div>
   </div>
 
+  <!-- ── Badge unlock toast ── -->
+  <div id="badge-toast">
+    <span id="toast-emoji">👑</span>
+    <div id="toast-name">Princesse</div>
+    <div id="toast-msg">Bravo !</div>
+  </div>
+
 </div>
 <script>
 // ── Badge definitions ─────────────────────────────────────────────────────────
 const DAILY_BADGES = [
-  { emoji: '🌱', name: 'Graine de Princesse', threshold: 1   },
-  { emoji: '🌸', name: 'Fleur du Palais',     threshold: 10  },
-  { emoji: '🎀', name: 'Damoiselle',          threshold: 25  },
-  { emoji: '👑', name: 'Princesse',           threshold: 50  },
-  { emoji: '💎', name: 'Duchesse',            threshold: 100 },
-  { emoji: '🏰', name: 'Dame du Château',    threshold: 200 },
-  { emoji: '🦋', name: 'Fée des Maths',      threshold: 350 },
-  { emoji: '👸', name: 'Reine des Maths',    threshold: 500 },
+  { emoji: '🌱', name: 'Graine de Princesse', threshold: 1,   congrats: "C'est parti, belle Princesse !" },
+  { emoji: '🌸', name: 'Fleur du Palais',     threshold: 10,  congrats: "Tu t'épanouis comme une fleur !" },
+  { emoji: '🎀', name: 'Damoiselle',          threshold: 25,  congrats: "Magnifique, ma Damoiselle !" },
+  { emoji: '👑', name: 'Princesse',           threshold: 50,  congrats: "Bravo, quelle Princesse tu fais !" },
+  { emoji: '💎', name: 'Duchesse',            threshold: 100, congrats: "Impressionnante, grande Duchesse !" },
+  { emoji: '🏰', name: 'Dame du Château',    threshold: 200, congrats: "Le château s'incline devant toi !" },
+  { emoji: '🦋', name: 'Fée des Maths',      threshold: 350, congrats: "La fée des maths est parmi nous !" },
+  { emoji: '👸', name: 'Reine des Maths',    threshold: 500, congrats: "Tu es la Reine des Maths !" },
 ];
 
 const STREAK_BADGES = [
@@ -433,6 +458,17 @@ const elBpFill= document.getElementById('bp-fill');
 const elBpNxt = document.getElementById('bp-nxt');
 const elBpScore = document.getElementById('bp-score');
 
+let toastTimer = null;
+function showBadgeToast(badge) {
+  const el = document.getElementById('badge-toast');
+  document.getElementById('toast-emoji').textContent = badge.emoji;
+  document.getElementById('toast-name').textContent  = badge.name;
+  document.getElementById('toast-msg').textContent   = badge.congrats;
+  if (toastTimer) clearTimeout(toastTimer);
+  el.classList.add('show');
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
 function renderBadgeProgress(n) {
   const cur = badgeForScore(n);
   const nxt = nextBadgeFor(n);
@@ -470,7 +506,10 @@ function handleKey(key) {
     if (parseInt(input,10) === eq.answer) {
       setBg('correct');
       if (navigator.vibrate) navigator.vibrate(80);
+      const prevBadge = badgeForScore(sessionScore);
       sessionScore = incrementToday(); render();
+      const newBadge = badgeForScore(sessionScore);
+      if (newBadge && newBadge !== prevBadge) showBadgeToast(newBadge);
       setTimeout(() => { eq = nextEq(); input=''; setBg('neutral'); render(); locked=false; }, 400);
     } else {
       setBg('wrong');
