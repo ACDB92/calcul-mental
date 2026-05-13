@@ -97,6 +97,8 @@
     .key:active { transform: scale(0.93); background: #e5e7eb; }
     .key-del { background: var(--numpad-del); }
     .key-del:active { background: #d1d5db; }
+    .key-neg { background: var(--numpad-del); }
+    .key-neg:active { background: #d1d5db; }
     .key-ok { background: var(--numpad-ok); color: #fff; }
     .key-ok:active { background: #15803d; }
 
@@ -275,6 +277,7 @@
         <button class="key" data-key="3">3</button>
       </div>
       <div class="numpad-row">
+        <button class="key key-neg" data-key="−">−</button>
         <button class="key key-del" data-key="⌫">⌫</button>
         <button class="key" data-key="0">0</button>
         <button class="key key-ok" data-key="✓">✓</button>
@@ -438,10 +441,10 @@ function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + m
 function nextEq() {
   const op = OPS[Math.floor(Math.random() * OPS.length)];
   let a, b, answer;
-  if (op === '+')      { a = rand(1,99); b = rand(1,99); answer = a + b; }
-  else if (op === '−') { a = rand(2,99); b = rand(1,a);  answer = a - b; }
-  else if (op === '×') { a = rand(1,12); b = rand(1,12); answer = a * b; }
-  else { b = rand(2,12); const q = rand(1,12); a = b*q; answer = q; }
+  if (op === '+')      { a = rand(10,999); b = rand(10,999); answer = a + b; }
+  else if (op === '−') { a = rand(1,999);  b = rand(1,999);  answer = a - b; }
+  else if (op === '×') { a = rand(2,100);  b = rand(2,100);  answer = a * b; }
+  else { b = rand(2,25); const q = rand(1,40); a = b*q; answer = q; }
   return { display: a + ' ' + op + ' ' + b, answer };
 }
 
@@ -500,6 +503,7 @@ function setBg(state) {
 function handleKey(key) {
   if (locked) return;
   if (key === '⌫') { input = input.slice(0,-1); }
+  else if (key === '−') { if (input === '') input = '-'; }
   else if (key === '✓') {
     if (!input) return;
     locked = true;
@@ -518,7 +522,7 @@ function handleKey(key) {
     }
     return;
   } else {
-    if (input.length >= 4) return;
+    if (input.length >= 5) return;
     input += key;
   }
   render();
