@@ -28,8 +28,7 @@
     }
 
     html, body {
-      height: 100%;
-      overflow: hidden;
+      height: 100%; overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       -webkit-tap-highlight-color: transparent;
       -webkit-text-size-adjust: 100%;
@@ -37,10 +36,8 @@
     }
 
     #app {
-      display: flex;
-      flex-direction: column;
-      height: 100dvh;
-      height: 100vh;
+      display: flex; flex-direction: column;
+      height: 100dvh; height: 100vh;
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
     }
@@ -52,23 +49,35 @@
     #screen-game { transition: background-color 0.15s ease; background: var(--bg); }
 
     #score-row {
-      display: flex;
-      align-items: center;
-      padding: 10px 16px 4px;
-      gap: 8px;
+      display: flex; align-items: center;
+      padding: 10px 14px 6px; gap: 8px;
     }
     #profile-btn {
       background: none; border: none; font-size: 26px;
       padding: 2px; cursor: pointer; line-height: 1;
-      -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
     }
-    #score-right { display: flex; align-items: center; gap: 6px; margin-left: auto; }
-    #score-label { font-size: 13px; color: var(--muted); font-weight: 500; }
-    #score-value { font-size: 22px; font-weight: 700; color: var(--text); min-width: 28px; text-align: right; }
+    #badge-prog-row {
+      flex: 1; display: flex; align-items: center; gap: 6px;
+    }
+    #bp-cur { font-size: 20px; flex-shrink: 0; }
+    #bp-bar {
+      flex: 1; height: 6px; background: #e5e7eb;
+      border-radius: 3px; overflow: hidden;
+    }
+    #bp-fill {
+      height: 100%; background: var(--green-dark);
+      border-radius: 3px; transition: width 0.3s ease;
+      width: 0%;
+    }
+    #bp-nxt { font-size: 20px; flex-shrink: 0; }
+    #bp-score {
+      font-size: 18px; font-weight: 700; color: var(--text);
+      min-width: 28px; text-align: right; flex-shrink: 0;
+    }
 
     #equation-area {
-      flex: 1;
-      display: flex; flex-direction: column;
+      flex: 1; display: flex; flex-direction: column;
       justify-content: center; align-items: center;
       gap: 20px; padding: 0 20px;
     }
@@ -113,11 +122,7 @@
     .heat-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
     .heat-cell { aspect-ratio: 1; border-radius: 7px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
     .heat-date { font-size: 9px; color: #999; }
-    .heat-count { font-size: 10px; font-weight: 700; color: #333; }
-    .legend { display: flex; align-items: center; gap: 8px; margin-top: 16px; justify-content: center; }
-    .legend-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-    .legend-dot { width: 18px; height: 18px; border-radius: 4px; }
-    .legend-lbl { font-size: 9px; color: #999; }
+    .heat-badge { font-size: 14px; line-height: 1; }
 
     /* ── Profile panel ── */
     #profile-panel {
@@ -134,8 +139,7 @@
     #profile-header {
       display: flex; align-items: center;
       padding: 12px 16px; gap: 12px;
-      border-bottom: 1px solid #f0f0f0;
-      flex-shrink: 0;
+      border-bottom: 1px solid #f0f0f0; flex-shrink: 0;
     }
     #back-btn {
       background: #f3f4f6; border: none; border-radius: 20px;
@@ -144,10 +148,7 @@
     }
     #profile-title { font-size: 17px; font-weight: 700; color: #111; }
 
-    #ptabs {
-      display: flex; flex-shrink: 0;
-      border-bottom: 1px solid #f0f0f0;
-    }
+    #ptabs { display: flex; flex-shrink: 0; border-bottom: 1px solid #f0f0f0; }
     .ptab {
       flex: 1; padding: 12px 4px; border: none; background: none;
       font-size: 13px; font-weight: 600; color: #bbb; cursor: pointer;
@@ -162,20 +163,15 @@
     /* Profil tab */
     .profile-avatar { text-align: center; margin-bottom: 20px; }
     .avatar-emoji { font-size: 64px; line-height: 1.1; display: block; }
-    .profile-name-row {
-      display: flex; align-items: center; justify-content: center;
-      gap: 6px; margin-top: 10px;
-    }
+    .profile-name-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; }
     #profile-name {
       font-size: 22px; font-weight: 700; color: #111;
       border: none; border-bottom: 2px solid transparent;
       text-align: center; background: transparent; outline: none;
-      max-width: 180px; width: auto;
-      transition: border-color 0.2s;
+      max-width: 180px; transition: border-color 0.2s;
     }
     #profile-name:focus { border-bottom-color: var(--green-dark); }
     .edit-icon { font-size: 13px; color: #ccc; }
-
     .pstats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
     .pstat-card { background: #f3f4f6; border-radius: 14px; padding: 14px 12px; text-align: center; }
     .pstat-val { font-size: 28px; font-weight: 700; color: var(--green-dark); }
@@ -199,8 +195,8 @@
       align-items: center; justify-content: center; gap: 1px;
     }
     .cal-day.today { outline: 2px solid var(--green-dark); outline-offset: -1px; }
-    .cal-day-num { font-size: 11px; }
-    .cal-day-count { font-size: 9px; font-weight: 800; }
+    .cal-day-num { font-size: 10px; }
+    .cal-day-badge { font-size: 13px; line-height: 1; }
 
     /* Badges tab */
     .badge-group-title {
@@ -212,12 +208,11 @@
     .badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .badge-card {
       background: #f9fafb; border-radius: 14px;
-      padding: 12px 6px 10px;
-      text-align: center;
+      padding: 12px 6px 10px; text-align: center;
       display: flex; flex-direction: column; align-items: center; gap: 5px;
     }
     .badge-card.unlocked { background: #f0fdf4; }
-    .badge-card.locked { opacity: 0.32; }
+    .badge-card.locked { opacity: 0.35; }
     .badge-em { font-size: 30px; line-height: 1.15; }
     .badge-name { font-size: 10px; font-weight: 700; color: #222; line-height: 1.2; }
     .badge-desc { font-size: 9px; color: #999; line-height: 1.3; }
@@ -234,10 +229,12 @@
   <div id="screen-game" class="screen active">
     <div id="score-row">
       <button id="profile-btn" onclick="openProfile()" aria-label="Mon espace">👸</button>
-      <div id="score-right">
-        <span id="score-label">Score du jour</span>
-        <span id="score-value">0</span>
+      <div id="badge-prog-row">
+        <span id="bp-cur">—</span>
+        <div id="bp-bar"><div id="bp-fill"></div></div>
+        <span id="bp-nxt">🌱</span>
       </div>
+      <span id="bp-score">0</span>
     </div>
     <div id="equation-area">
       <div id="equation">—</div>
@@ -272,19 +269,12 @@
     <div id="stats-content">
       <p class="stats-title">Statistiques</p>
       <div class="summary-row">
-        <div class="summary-card"><div class="summary-val" id="stat-today">0</div><div class="summary-lbl">Aujourd'hui</div></div>
-        <div class="summary-card"><div class="summary-val" id="stat-total">0</div><div class="summary-lbl">Total 30j</div></div>
+        <div class="summary-card"><div class="summary-val" id="stat-today">—</div><div class="summary-lbl">Aujourd'hui</div></div>
+        <div class="summary-card"><div class="summary-val" id="stat-streak">0 🔥</div><div class="summary-lbl">Jours consécutifs</div></div>
         <div class="summary-card"><div class="summary-val" id="stat-days">0</div><div class="summary-lbl">Jours actifs</div></div>
       </div>
       <p class="section-title">30 derniers jours</p>
       <div class="heat-grid" id="heat-grid"></div>
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#f3f4f6"></div><div class="legend-lbl">0</div></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#bbf7d0"></div><div class="legend-lbl">1+</div></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div><div class="legend-lbl">5+</div></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div><div class="legend-lbl">10+</div></div>
-        <div class="legend-item"><div class="legend-dot" style="background:#14532d"></div><div class="legend-lbl">20+</div></div>
-      </div>
     </div>
   </div>
 
@@ -305,9 +295,9 @@
       <span id="profile-title">Mon espace</span>
     </div>
     <div id="ptabs">
-      <button class="ptab active" data-ptab="profil"    onclick="switchPTab('profil')">Profil</button>
+      <button class="ptab active" data-ptab="profil"     onclick="switchPTab('profil')">Profil</button>
       <button class="ptab"        data-ptab="calendrier" onclick="switchPTab('calendrier')">Calendrier</button>
-      <button class="ptab"        data-ptab="badges"    onclick="switchPTab('badges')">Badges</button>
+      <button class="ptab"        data-ptab="badges"     onclick="switchPTab('badges')">Badges</button>
     </div>
     <div id="profile-content">
       <!-- Profil -->
@@ -341,7 +331,36 @@
 
 </div>
 <script>
-// ── Storage ──────────────────────────────────────────────────────────────────
+// ── Badge definitions ─────────────────────────────────────────────────────────
+const DAILY_BADGES = [
+  { emoji: '🌱', name: 'Graine de Princesse', threshold: 1   },
+  { emoji: '🌸', name: 'Fleur du Palais',     threshold: 10  },
+  { emoji: '🎀', name: 'Damoiselle',          threshold: 25  },
+  { emoji: '👑', name: 'Princesse',           threshold: 50  },
+  { emoji: '💎', name: 'Duchesse',            threshold: 100 },
+  { emoji: '🏰', name: 'Dame du Château',    threshold: 200 },
+  { emoji: '🦋', name: 'Fée des Maths',      threshold: 350 },
+  { emoji: '👸', name: 'Reine des Maths',    threshold: 500 },
+];
+
+const STREAK_BADGES = [
+  { emoji: '🌷', name: 'Fidèle',       threshold: 3  },
+  { emoji: '🌺', name: 'Assidue',      threshold: 7  },
+  { emoji: '🌹', name: 'Inébranlable', threshold: 14 },
+  { emoji: '✨', name: 'Légende',      threshold: 30 },
+];
+
+function badgeForScore(n) {
+  let b = null;
+  for (const d of DAILY_BADGES) { if (n >= d.threshold) b = d; else break; }
+  return b;
+}
+
+function nextBadgeFor(n) {
+  return DAILY_BADGES.find(d => n < d.threshold) || null;
+}
+
+// ── Storage ───────────────────────────────────────────────────────────────────
 function todayKey() { return 'score:' + new Date().toISOString().slice(0, 10); }
 function dateKey(d) { return 'score:' + d.toISOString().slice(0, 10); }
 
@@ -388,7 +407,7 @@ function calcStats() {
   return { total, bestDay, streak, memberSince, all };
 }
 
-// ── Math ─────────────────────────────────────────────────────────────────────
+// ── Math ──────────────────────────────────────────────────────────────────────
 const OPS = ['+', '−', '×', '÷'];
 function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 function nextEq() {
@@ -401,20 +420,39 @@ function nextEq() {
   return { display: a + ' ' + op + ' ' + b, answer };
 }
 
-// ── Game ─────────────────────────────────────────────────────────────────────
+// ── Game ──────────────────────────────────────────────────────────────────────
 let eq = nextEq(), input = '', locked = false;
 let sessionScore = parseInt(localStorage.getItem(todayKey()) || '0', 10);
 
 const elEq    = document.getElementById('equation');
 const elInput = document.getElementById('input-display');
-const elScore = document.getElementById('score-value');
 const elGame  = document.getElementById('screen-game');
 const elTheme = document.getElementById('theme-meta');
+const elBpCur = document.getElementById('bp-cur');
+const elBpFill= document.getElementById('bp-fill');
+const elBpNxt = document.getElementById('bp-nxt');
+const elBpScore = document.getElementById('bp-score');
+
+function renderBadgeProgress(n) {
+  const cur = badgeForScore(n);
+  const nxt = nextBadgeFor(n);
+  elBpCur.textContent  = cur ? cur.emoji : '—';
+  elBpScore.textContent = n;
+  if (nxt) {
+    const prevT = cur ? cur.threshold : 0;
+    const pct = Math.round((n - prevT) / (nxt.threshold - prevT) * 100);
+    elBpFill.style.width = Math.min(pct, 100) + '%';
+    elBpNxt.textContent = nxt.emoji;
+  } else {
+    elBpFill.style.width = '100%';
+    elBpNxt.textContent = '✨';
+  }
+}
 
 function render() {
   elEq.textContent    = eq.display + ' =';
   elInput.textContent = input || '?';
-  elScore.textContent = sessionScore;
+  renderBadgeProgress(sessionScore);
 }
 
 function setBg(state) {
@@ -452,7 +490,7 @@ document.querySelectorAll('.key').forEach(btn => {
   btn.addEventListener('click', () => handleKey(btn.dataset.key));
 });
 
-// ── Main tabs ────────────────────────────────────────────────────────────────
+// ── Main tabs ─────────────────────────────────────────────────────────────────
 function switchTab(tab) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -461,31 +499,34 @@ function switchTab(tab) {
   if (tab === 'stats') renderStats();
 }
 
-// ── Stats screen ─────────────────────────────────────────────────────────────
-function heatColor(count, max) {
+// ── Stats screen ──────────────────────────────────────────────────────────────
+function heatColor(count) {
   if (count === 0) return '#f3f4f6';
-  const r = Math.min(count / Math.max(max, 1), 1);
-  if (r < 0.15) return '#bbf7d0';
-  if (r < 0.40) return '#4ade80';
-  if (r < 0.70) return '#16a34a';
-  return '#14532d';
+  const b = badgeForScore(count);
+  if (!b) return '#f3f4f6';
+  const i = DAILY_BADGES.indexOf(b);
+  const colors = ['#dcfce7','#bbf7d0','#86efac','#4ade80','#22c55e','#16a34a','#15803d','#166534'];
+  return colors[Math.min(i, colors.length - 1)];
 }
 
 function renderStats() {
   const scores = getScores(30);
-  const total  = scores.reduce((s,d) => s+d.count, 0);
   const active = scores.filter(d => d.count > 0).length;
-  const today  = scores[scores.length-1]?.count ?? 0;
-  const max    = Math.max(...scores.map(d => d.count), 1);
-  document.getElementById('stat-today').textContent = today;
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-days').textContent  = active;
+  const todayCount = scores[scores.length-1]?.count ?? 0;
+  const todayBadge = badgeForScore(todayCount);
+
+  const stats = calcStats();
+  document.getElementById('stat-today').textContent = todayBadge ? todayBadge.emoji : (todayCount > 0 ? todayCount : '—');
+  document.getElementById('stat-streak').textContent = stats.streak + ' 🔥';
+  document.getElementById('stat-days').textContent   = active;
+
   document.getElementById('heat-grid').innerHTML = scores.map(({date,count}) => {
     const d = new Date(date+'T00:00:00');
     const lbl = d.getDate()+'/'+(d.getMonth()+1);
-    return '<div class="heat-cell" style="background:'+heatColor(count,max)+'">'
+    const badge = badgeForScore(count);
+    return '<div class="heat-cell" style="background:'+heatColor(count)+'">'
       +'<span class="heat-date">'+lbl+'</span>'
-      +(count>0?'<span class="heat-count">'+count+'</span>':'')
+      +(badge ? '<span class="heat-badge">'+badge.emoji+'</span>' : '')
       +'</div>';
   }).join('');
 }
@@ -495,8 +536,7 @@ let calYear, calMonth, activePTab = 'profil';
 
 function openProfile() {
   const now = new Date();
-  calYear  = now.getFullYear();
-  calMonth = now.getMonth();
+  calYear = now.getFullYear(); calMonth = now.getMonth();
   document.getElementById('profile-panel').classList.add('open');
   history.pushState({ panel:'profile' }, '');
   renderPTab(activePTab);
@@ -516,23 +556,25 @@ function switchPTab(tab) {
 
 function renderPTab(tab) {
   const stats = calcStats();
-  if (tab === 'profil')     renderProfilTab(stats);
+  if (tab === 'profil')          renderProfilTab(stats);
   else if (tab === 'calendrier') renderCalTab(stats);
-  else                      renderBadgesTab(stats);
+  else                           renderBadgesTab(stats);
 }
 
-// ── Profil tab ───────────────────────────────────────────────────────────────
+// ── Profil tab ────────────────────────────────────────────────────────────────
 function saveName(v) { localStorage.setItem('profile:name', v.trim() || 'Princesse'); }
 
 function renderProfilTab(stats) {
   document.getElementById('profile-name').value = localStorage.getItem('profile:name') || 'Princesse';
+  const todayScore = parseInt(localStorage.getItem(todayKey()) || '0', 10);
+  const todayBadge = badgeForScore(todayScore);
+  const streakBadge = STREAK_BADGES.slice().reverse().find(b => stats.streak >= b.threshold);
 
-  const earned = BADGES.filter(b => b.req(stats)).length;
   document.getElementById('pstats-grid').innerHTML = [
-    { val: stats.total,               lbl: 'Réponses correctes' },
-    { val: stats.bestDay,             lbl: 'Meilleur jour' },
-    { val: stats.streak + ' 🔥',     lbl: 'Jours consécutifs' },
-    { val: earned + ' / ' + BADGES.length, lbl: 'Badges obtenus' },
+    { val: todayBadge ? todayBadge.emoji + ' ' + todayScore : todayScore || '—', lbl: "Badge du jour" },
+    { val: stats.bestDay,           lbl: 'Meilleur score / jour' },
+    { val: stats.streak + ' 🔥',   lbl: 'Jours consécutifs' },
+    { val: streakBadge ? streakBadge.emoji + ' ' + streakBadge.name : '—', lbl: 'Badge fidélité' },
   ].map(({val,lbl}) =>
     '<div class="pstat-card"><div class="pstat-val">'+val+'</div><div class="pstat-lbl">'+lbl+'</div></div>'
   ).join('');
@@ -554,78 +596,84 @@ function changeMonth(dir) {
 }
 
 function renderCalTab(stats) {
-  const all    = stats.all;
-  const maxVal = Math.max(1, ...Object.values(all).filter(Boolean));
+  const all     = stats.all;
   const todayStr = new Date().toISOString().slice(0,10);
-  const now    = new Date();
+  const now     = new Date();
 
   document.getElementById('cal-label').textContent = MONTHS[calMonth] + ' ' + calYear;
   document.getElementById('cal-next').disabled =
     calYear === now.getFullYear() && calMonth === now.getMonth();
 
-  const firstDow = ((new Date(calYear, calMonth, 1).getDay() + 6) % 7); // Mon=0
+  const firstDow = ((new Date(calYear, calMonth, 1).getDay() + 6) % 7);
   const lastDay  = new Date(calYear, calMonth+1, 0).getDate();
 
   let html = ['L','M','M','J','V','S','D'].map(d => '<div class="cal-head">'+d+'</div>').join('');
   for (let i=0; i<firstDow; i++) html += '<div></div>';
+
   for (let d=1; d<=lastDay; d++) {
-    const ds  = calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    const cnt = all[ds] || 0;
-    const bg  = heatColor(cnt, maxVal);
-    const txtColor = cnt > 0 ? '#fff' : '#999';
+    const ds    = calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const cnt   = all[ds] || 0;
+    const badge = badgeForScore(cnt);
+    const bg    = heatColor(cnt);
+    const txtColor = cnt > 0 ? '#555' : '#bbb';
     html += '<div class="cal-day'+(ds===todayStr?' today':'')+'" style="background:'+bg+'">'
       +'<span class="cal-day-num" style="color:'+txtColor+'">'+d+'</span>'
-      +(cnt>0?'<span class="cal-day-count" style="color:'+txtColor+'">'+cnt+'</span>':'')
+      +(badge ? '<span class="cal-day-badge">'+badge.emoji+'</span>' : '')
       +'</div>';
   }
   document.getElementById('cal-grid').innerHTML = html;
 }
 
-// ── Badges ────────────────────────────────────────────────────────────────────
-const BADGES = [
-  // Score total
-  { id:'b1',  emoji:'🌱', name:'Graine de Princesse', desc:'1ère bonne réponse',    group:'✨ Score total',  req: s => s.total >= 1,    prog: s => ({ cur: s.total,   max: 1    }) },
-  { id:'b2',  emoji:'🌸', name:'Fleur du Palais',     desc:'10 réponses',           group:'✨ Score total',  req: s => s.total >= 10,   prog: s => ({ cur: s.total,   max: 10   }) },
-  { id:'b3',  emoji:'🎀', name:'Damoiselle',          desc:'50 réponses',           group:'✨ Score total',  req: s => s.total >= 50,   prog: s => ({ cur: s.total,   max: 50   }) },
-  { id:'b4',  emoji:'👑', name:'Princesse',           desc:'100 réponses',          group:'✨ Score total',  req: s => s.total >= 100,  prog: s => ({ cur: s.total,   max: 100  }) },
-  { id:'b5',  emoji:'💎', name:'Duchesse',            desc:'250 réponses',          group:'✨ Score total',  req: s => s.total >= 250,  prog: s => ({ cur: s.total,   max: 250  }) },
-  { id:'b6',  emoji:'🏰', name:'Dame du Château',    desc:'500 réponses',          group:'✨ Score total',  req: s => s.total >= 500,  prog: s => ({ cur: s.total,   max: 500  }) },
-  { id:'b7',  emoji:'🦋', name:'Fée des Maths',      desc:'1 000 réponses',        group:'✨ Score total',  req: s => s.total >= 1000, prog: s => ({ cur: s.total,   max: 1000 }) },
-  { id:'b8',  emoji:'👸', name:'Reine des Maths',    desc:'5 000 réponses',        group:'✨ Score total',  req: s => s.total >= 5000, prog: s => ({ cur: s.total,   max: 5000 }) },
-  // Régularité
-  { id:'b9',  emoji:'🌷', name:'Fidèle',             desc:'3 jours de suite',      group:'🔥 Régularité',  req: s => s.streak >= 3,   prog: s => ({ cur: s.streak,  max: 3    }) },
-  { id:'b10', emoji:'🌺', name:'Assidue',            desc:'7 jours de suite',      group:'🔥 Régularité',  req: s => s.streak >= 7,   prog: s => ({ cur: s.streak,  max: 7    }) },
-  { id:'b11', emoji:'🌹', name:'Inébranlable',       desc:'14 jours de suite',     group:'🔥 Régularité',  req: s => s.streak >= 14,  prog: s => ({ cur: s.streak,  max: 14   }) },
-  { id:'b12', emoji:'✨', name:'Légende',            desc:'30 jours de suite',     group:'🔥 Régularité',  req: s => s.streak >= 30,  prog: s => ({ cur: s.streak,  max: 30   }) },
-  // Performance
-  { id:'b13', emoji:'⭐', name:'Étoilée',            desc:'10 en un seul jour',    group:'💫 Performance', req: s => s.bestDay >= 10, prog: s => ({ cur: s.bestDay, max: 10   }) },
-  { id:'b14', emoji:'💫', name:'Étincelante',        desc:'20 en un seul jour',    group:'💫 Performance', req: s => s.bestDay >= 20, prog: s => ({ cur: s.bestDay, max: 20   }) },
-  { id:'b15', emoji:'🎇', name:'Éblouissante',       desc:'50 en un seul jour',    group:'💫 Performance', req: s => s.bestDay >= 50, prog: s => ({ cur: s.bestDay, max: 50   }) },
-];
-
+// ── Badges tab ────────────────────────────────────────────────────────────────
 function renderBadgesTab(stats) {
-  const groups = [...new Set(BADGES.map(b => b.group))];
-  document.getElementById('badges-wrap').innerHTML = groups.map(group => {
-    const cards = BADGES.filter(b => b.group === group).map(b => {
-      const ok = b.req(stats);
-      let progHtml = '';
-      if (!ok) {
-        const { cur, max } = b.prog(stats);
-        const pct = Math.min(Math.round(cur / max * 100), 100);
-        progHtml = '<div class="badge-prog">'
-          +'<div class="badge-prog-text">'+Math.min(cur, max)+' / '+max+'</div>'
-          +'<div class="badge-bar"><div class="badge-bar-fill" style="width:'+pct+'%"></div></div>'
-          +'</div>';
-      }
-      return '<div class="badge-card '+(ok?'unlocked':'locked')+'">'
-        +'<div class="badge-em">'+(ok?b.emoji:'🔒')+'</div>'
-        +'<div class="badge-name">'+b.name+'</div>'
-        +'<div class="badge-desc">'+b.desc+'</div>'
-        +progHtml
+  const todayScore = parseInt(localStorage.getItem(todayKey()) || '0', 10);
+
+  // Daily badge ladder — progress for today
+  let dailyCards = DAILY_BADGES.map(b => {
+    const earned = todayScore >= b.threshold;
+    let progHtml = '';
+    if (!earned) {
+      const prevIdx  = DAILY_BADGES.indexOf(b) - 1;
+      const prevT    = prevIdx >= 0 ? DAILY_BADGES[prevIdx].threshold : 0;
+      const pct      = Math.min(Math.round((todayScore - prevT) / (b.threshold - prevT) * 100), 100);
+      const cur      = Math.min(todayScore, b.threshold);
+      progHtml = '<div class="badge-prog">'
+        +'<div class="badge-prog-text">'+cur+' / '+b.threshold+'</div>'
+        +'<div class="badge-bar"><div class="badge-bar-fill" style="width:'+Math.max(pct,0)+'%"></div></div>'
         +'</div>';
-    }).join('');
-    return '<div class="badge-group-title">'+group+'</div><div class="badges-grid">'+cards+'</div>';
+    }
+    return '<div class="badge-card '+(earned?'unlocked':'locked')+'">'
+      +'<div class="badge-em">'+(earned?b.emoji:'🔒')+'</div>'
+      +'<div class="badge-name">'+b.name+'</div>'
+      +'<div class="badge-desc">'+(earned?'✓ atteint aujourd\'hui':b.threshold+' réponses/jour')+'</div>'
+      +progHtml
+      +'</div>';
   }).join('');
+
+  // Streak badges
+  let streakCards = STREAK_BADGES.map(b => {
+    const earned = stats.streak >= b.threshold;
+    let progHtml = '';
+    if (!earned) {
+      const pct = Math.round(stats.streak / b.threshold * 100);
+      progHtml = '<div class="badge-prog">'
+        +'<div class="badge-prog-text">'+stats.streak+' / '+b.threshold+' jours</div>'
+        +'<div class="badge-bar"><div class="badge-bar-fill" style="width:'+pct+'%"></div></div>'
+        +'</div>';
+    }
+    return '<div class="badge-card '+(earned?'unlocked':'locked')+'">'
+      +'<div class="badge-em">'+(earned?b.emoji:'🔒')+'</div>'
+      +'<div class="badge-name">'+b.name+'</div>'
+      +'<div class="badge-desc">'+b.threshold+' jours de suite</div>'
+      +progHtml
+      +'</div>';
+  }).join('');
+
+  document.getElementById('badges-wrap').innerHTML =
+    '<div class="badge-group-title">✨ Médailles du jour</div>'
+    +'<div class="badges-grid">'+dailyCards+'</div>'
+    +'<div class="badge-group-title">🔥 Fidélité</div>'
+    +'<div class="badges-grid">'+streakCards+'</div>';
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
