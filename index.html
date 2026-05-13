@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#ffffff" id="theme-meta">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg">
+  <title>Calcul Mental</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #22c55e;
+      --green-dark: #16a34a;
+      --red: #ef4444;
+      --bg: #ffffff;
+      --numpad-key: #f3f4f6;
+      --numpad-del: #e5e7eb;
+      --numpad-ok: #16a34a;
+      --text: #111111;
+      --muted: #666666;
+      --tab-active: #16a34a;
+      --tab-inactive: #9ca3af;
+      --transition: background-color 0.15s ease;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-text-size-adjust: 100%;
+      user-select: none;
+    }
+
+    #app {
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      height: 100vh;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* ── Screens ── */
+    .screen { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .screen.active { display: flex; }
+
+    /* ── Game screen ── */
+    #screen-game {
+      transition: var(--transition);
+      background: var(--bg);
+    }
+
+    #score-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px 4px;
+    }
+    #score-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+    #score-value { font-size: 22px; font-weight: 700; color: var(--text); min-width: 32px; text-align: right; }
+
+    #equation-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding: 0 20px;
+    }
+
+    #equation {
+      font-size: clamp(40px, 12vw, 60px);
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: 3px;
+      text-align: center;
+    }
+
+    #input-display {
+      font-size: clamp(56px, 18vw, 80px);
+      font-weight: 700;
+      color: var(--text);
+      min-width: 120px;
+      text-align: center;
+      min-height: 1.2em;
+    }
+
+    /* ── Numpad ── */
+    #numpad {
+      padding: 8px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .numpad-row { display: flex; gap: 8px; }
+    .key {
+      flex: 1;
+      height: clamp(56px, 14vw, 72px);
+      background: var(--numpad-key);
+      border: none;
+      border-radius: 14px;
+      font-size: clamp(22px, 6vw, 30px);
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      transition: transform 0.08s ease, background 0.08s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .key:active { transform: scale(0.93); background: #e5e7eb; }
+    .key-del { background: var(--numpad-del); }
+    .key-del:active { background: #d1d5db; }
+    .key-ok { background: var(--numpad-ok); color: #fff; }
+    .key-ok:active { background: #15803d; }
+
+    /* ── Tab bar ── */
+    #tabs {
+      display: flex;
+      background: #fff;
+      border-top: 1px solid #e5e7eb;
+      padding-bottom: 0;
+    }
+    .tab {
+      flex: 1;
+      padding: 10px 4px 12px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--tab-inactive);
+      font-size: 11px;
+      font-weight: 600;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tab .tab-icon { font-size: 22px; }
+    .tab.active { color: var(--tab-active); }
+
+    /* ── Stats screen ── */
+    #screen-stats {
+      background: #fff;
+      overflow-y: auto;
+    }
+
+    #stats-content {
+      padding: 20px;
+      padding-bottom: 24px;
+    }
+
+    .stats-title { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+
+    .summary-row { display: flex; gap: 10px; margin-bottom: 28px; }
+    .summary-card {
+      flex: 1;
+      background: #f3f4f6;
+      border-radius: 14px;
+      padding: 14px 8px;
+      text-align: center;
+    }
+    .summary-val { font-size: 30px; font-weight: 700; color: var(--green-dark); }
+    .summary-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    .section-title { font-size: 14px; font-weight: 600; color: #444; margin-bottom: 12px; }
+
+    .heat-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 5px;
+    }
+
+    .heat-cell {
+      aspect-ratio: 1;
+      border-radius: 7px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+    }
+    .heat-date { font-size: 9px; color: #999; }
+    .heat-count { font-size: 10px; font-weight: 700; color: #333; }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      justify-content: center;
+    }
+    .legend-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .legend-dot { width: 18px; height: 18px; border-radius: 4px; }
+    .legend-lbl { font-size: 9px; color: #999; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Game screen -->
+  <div id="screen-game" class="screen active">
+    <div id="score-row">
+      <span id="score-label">Score du jour</span>
+      <span id="score-value">0</span>
+    </div>
+    <div id="equation-area">
+      <div id="equation">—</div>
+      <div id="input-display">?</div>
+    </div>
+    <div id="numpad">
+      <div class="numpad-row">
+        <button class="key" data-key="7">7</button>
+        <button class="key" data-key="8">8</button>
+        <button class="key" data-key="9">9</button>
+      </div>
+      <div class="numpad-row">
+        <button class="key" data-key="4">4</button>
+        <button class="key" data-key="5">5</button>
+        <button class="key" data-key="6">6</button>
+      </div>
+      <div class="numpad-row">
+        <button class="key" data-key="1">1</button>
+        <button class="key" data-key="2">2</button>
+        <button class="key" data-key="3">3</button>
+      </div>
+      <div class="numpad-row">
+        <button class="key key-del" data-key="⌫">⌫</button>
+        <button class="key" data-key="0">0</button>
+        <button class="key key-ok" data-key="✓">✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats screen -->
+  <div id="screen-stats" class="screen">
+    <div id="stats-content">
+      <p class="stats-title">Statistiques</p>
+      <div class="summary-row">
+        <div class="summary-card">
+          <div class="summary-val" id="stat-today">0</div>
+          <div class="summary-lbl">Aujourd'hui</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-val" id="stat-total">0</div>
+          <div class="summary-lbl">Total 30j</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-val" id="stat-days">0</div>
+          <div class="summary-lbl">Jours actifs</div>
+        </div>
+      </div>
+      <p class="section-title">30 derniers jours</p>
+      <div class="heat-grid" id="heat-grid"></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#f3f4f6"></div><div class="legend-lbl">0</div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#bbf7d0"></div><div class="legend-lbl">1+</div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div><div class="legend-lbl">5+</div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div><div class="legend-lbl">10+</div></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#14532d"></div><div class="legend-lbl">20+</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab bar -->
+  <nav id="tabs">
+    <button class="tab active" id="tab-game" onclick="switchTab('game')">
+      <span class="tab-icon">🧮</span>Jeu
+    </button>
+    <button class="tab" id="tab-stats" onclick="switchTab('stats')">
+      <span class="tab-icon">📊</span>Stats
+    </button>
+  </nav>
+
+</div>
+<script>
+  // ── Storage ──────────────────────────────────────────
+  function todayKey() {
+    return 'score:' + new Date().toISOString().slice(0, 10);
+  }
+  function dateKey(d) {
+    return 'score:' + d.toISOString().slice(0, 10);
+  }
+  function incrementToday() {
+    const key = todayKey();
+    const n = (parseInt(localStorage.getItem(key) || '0', 10)) + 1;
+    localStorage.setItem(key, n);
+    return n;
+  }
+  function getScores(days) {
+    const out = [];
+    const today = new Date();
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      const key = dateKey(d);
+      const dateStr = d.toISOString().slice(0, 10);
+      out.push({ date: dateStr, count: parseInt(localStorage.getItem(key) || '0', 10) });
+    }
+    return out;
+  }
+
+  // ── Math ─────────────────────────────────────────────
+  const OPS = ['+', '−', '×', '÷'];
+  function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function nextEq() {
+    const op = OPS[Math.floor(Math.random() * OPS.length)];
+    let a, b, answer;
+    if (op === '+') { a = rand(1, 99); b = rand(1, 99); answer = a + b; }
+    else if (op === '−') { a = rand(2, 99); b = rand(1, a); answer = a - b; }
+    else if (op === '×') { a = rand(1, 12); b = rand(1, 12); answer = a * b; }
+    else { b = rand(2, 12); const q = rand(1, 12); a = b * q; answer = q; }
+    return { display: a + ' ' + op + ' ' + b, answer };
+  }
+
+  // ── Game state ────────────────────────────────────────
+  let eq = nextEq();
+  let input = '';
+  let locked = false;
+  let sessionScore = parseInt(localStorage.getItem(todayKey()) || '0', 10);
+
+  const elEq       = document.getElementById('equation');
+  const elInput    = document.getElementById('input-display');
+  const elScore    = document.getElementById('score-value');
+  const elGame     = document.getElementById('screen-game');
+  const elTheme    = document.getElementById('theme-meta');
+
+  function render() {
+    elEq.textContent = eq.display + ' =';
+    elInput.textContent = input || '?';
+    elScore.textContent = sessionScore;
+  }
+
+  function setBg(state) {
+    const colors = { neutral: '#ffffff', correct: '#22c55e', wrong: '#ef4444' };
+    const themes  = { neutral: '#ffffff', correct: '#22c55e', wrong: '#ef4444' };
+    elGame.style.backgroundColor = colors[state];
+    elTheme.setAttribute('content', themes[state]);
+  }
+
+  function vibrate(pattern) {
+    if (navigator.vibrate) navigator.vibrate(pattern);
+  }
+
+  function handleKey(key) {
+    if (locked) return;
+    if (key === '⌫') {
+      input = input.slice(0, -1);
+    } else if (key === '✓') {
+      if (!input) return;
+      locked = true;
+      const guess = parseInt(input, 10);
+      if (guess === eq.answer) {
+        setBg('correct');
+        vibrate(80);
+        sessionScore = incrementToday();
+        render();
+        setTimeout(() => { eq = nextEq(); input = ''; setBg('neutral'); render(); locked = false; }, 400);
+      } else {
+        setBg('wrong');
+        vibrate([80, 60, 80]);
+        setTimeout(() => { input = ''; setBg('neutral'); render(); locked = false; }, 800);
+      }
+      return;
+    } else {
+      if (input.length >= 4) return;
+      input += key;
+    }
+    render();
+  }
+
+  // Numpad events (touchstart for snappier feel)
+  document.querySelectorAll('.key').forEach(btn => {
+    btn.addEventListener('touchstart', e => { e.preventDefault(); handleKey(btn.dataset.key); }, { passive: false });
+    btn.addEventListener('click', () => handleKey(btn.dataset.key));
+  });
+
+  // ── Tabs ─────────────────────────────────────────────
+  function switchTab(tab) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('screen-' + tab).classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+    if (tab === 'stats') renderStats();
+  }
+
+  // ── Stats ─────────────────────────────────────────────
+  function heatColor(count, max) {
+    if (count === 0) return '#f3f4f6';
+    const r = Math.min(count / Math.max(max, 1), 1);
+    if (r < 0.15) return '#bbf7d0';
+    if (r < 0.40) return '#4ade80';
+    if (r < 0.70) return '#16a34a';
+    return '#14532d';
+  }
+
+  function renderStats() {
+    const scores = getScores(30);
+    const total  = scores.reduce((s, d) => s + d.count, 0);
+    const active = scores.filter(d => d.count > 0).length;
+    const today  = scores[scores.length - 1]?.count ?? 0;
+    const max    = Math.max(...scores.map(d => d.count), 1);
+
+    document.getElementById('stat-today').textContent = today;
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-days').textContent  = active;
+
+    const grid = document.getElementById('heat-grid');
+    grid.innerHTML = scores.map(({ date, count }) => {
+      const d = new Date(date + 'T00:00:00');
+      const label = d.getDate() + '/' + (d.getMonth() + 1);
+      return `<div class="heat-cell" style="background:${heatColor(count, max)}">
+        <span class="heat-date">${label}</span>
+        ${count > 0 ? `<span class="heat-count">${count}</span>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  // ── Init ──────────────────────────────────────────────
+  render();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+</script>
+</body>
+</html>
