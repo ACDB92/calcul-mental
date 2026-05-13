@@ -25,7 +25,6 @@
       --muted: #666666;
       --tab-active: #16a34a;
       --tab-inactive: #9ca3af;
-      --transition: background-color 0.15s ease;
     }
 
     html, body {
@@ -46,77 +45,45 @@
       padding-bottom: env(safe-area-inset-bottom);
     }
 
-    /* ── Screens ── */
     .screen { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .screen.active { display: flex; }
 
     /* ── Game screen ── */
-    #screen-game {
-      transition: var(--transition);
-      background: var(--bg);
-    }
+    #screen-game { transition: background-color 0.15s ease; background: var(--bg); }
 
     #score-row {
       display: flex;
-      justify-content: flex-end;
       align-items: center;
+      padding: 10px 16px 4px;
       gap: 8px;
-      padding: 12px 20px 4px;
     }
+    #profile-btn {
+      background: none; border: none; font-size: 26px;
+      padding: 2px; cursor: pointer; line-height: 1;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #score-right { display: flex; align-items: center; gap: 6px; margin-left: auto; }
     #score-label { font-size: 13px; color: var(--muted); font-weight: 500; }
-    #score-value { font-size: 22px; font-weight: 700; color: var(--text); min-width: 32px; text-align: right; }
+    #score-value { font-size: 22px; font-weight: 700; color: var(--text); min-width: 28px; text-align: right; }
 
     #equation-area {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      padding: 0 20px;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      gap: 20px; padding: 0 20px;
     }
+    #equation { font-size: clamp(40px,12vw,60px); font-weight: 300; color: var(--text); letter-spacing: 3px; text-align: center; }
+    #input-display { font-size: clamp(56px,18vw,80px); font-weight: 700; color: var(--text); min-width: 120px; text-align: center; min-height: 1.2em; }
 
-    #equation {
-      font-size: clamp(40px, 12vw, 60px);
-      font-weight: 300;
-      color: var(--text);
-      letter-spacing: 3px;
-      text-align: center;
-    }
-
-    #input-display {
-      font-size: clamp(56px, 18vw, 80px);
-      font-weight: 700;
-      color: var(--text);
-      min-width: 120px;
-      text-align: center;
-      min-height: 1.2em;
-    }
-
-    /* ── Numpad ── */
-    #numpad {
-      padding: 8px 16px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    #numpad { padding: 8px 16px 16px; display: flex; flex-direction: column; gap: 8px; }
     .numpad-row { display: flex; gap: 8px; }
     .key {
-      flex: 1;
-      height: clamp(56px, 14vw, 72px);
-      background: var(--numpad-key);
-      border: none;
-      border-radius: 14px;
-      font-size: clamp(22px, 6vw, 30px);
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      flex: 1; height: clamp(56px,14vw,72px);
+      background: var(--numpad-key); border: none; border-radius: 14px;
+      font-size: clamp(22px,6vw,30px); font-weight: 600; color: var(--text);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
       transition: transform 0.08s ease, background 0.08s ease;
-      -webkit-tap-highlight-color: transparent;
     }
     .key:active { transform: scale(0.93); background: #e5e7eb; }
     .key-del { background: var(--numpad-del); }
@@ -125,94 +92,148 @@
     .key-ok:active { background: #15803d; }
 
     /* ── Tab bar ── */
-    #tabs {
-      display: flex;
-      background: #fff;
-      border-top: 1px solid #e5e7eb;
-      padding-bottom: 0;
-    }
+    #tabs { display: flex; background: #fff; border-top: 1px solid #e5e7eb; }
     .tab {
-      flex: 1;
-      padding: 10px 4px 12px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      color: var(--tab-inactive);
-      font-size: 11px;
-      font-weight: 600;
-      -webkit-tap-highlight-color: transparent;
+      flex: 1; padding: 10px 4px 12px; border: none; background: none; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      color: var(--tab-inactive); font-size: 11px; font-weight: 600;
     }
     .tab .tab-icon { font-size: 22px; }
     .tab.active { color: var(--tab-active); }
 
     /* ── Stats screen ── */
-    #screen-stats {
-      background: #fff;
-      overflow-y: auto;
-    }
-
-    #stats-content {
-      padding: 20px;
-      padding-bottom: 24px;
-    }
-
+    #screen-stats { background: #fff; overflow-y: auto; }
+    #stats-content { padding: 20px; padding-bottom: 24px; }
     .stats-title { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
-
     .summary-row { display: flex; gap: 10px; margin-bottom: 28px; }
-    .summary-card {
-      flex: 1;
-      background: #f3f4f6;
-      border-radius: 14px;
-      padding: 14px 8px;
-      text-align: center;
-    }
+    .summary-card { flex: 1; background: #f3f4f6; border-radius: 14px; padding: 14px 8px; text-align: center; }
     .summary-val { font-size: 30px; font-weight: 700; color: var(--green-dark); }
     .summary-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; }
-
     .section-title { font-size: 14px; font-weight: 600; color: #444; margin-bottom: 12px; }
-
-    .heat-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 5px;
-    }
-
-    .heat-cell {
-      aspect-ratio: 1;
-      border-radius: 7px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1px;
-    }
+    .heat-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
+    .heat-cell { aspect-ratio: 1; border-radius: 7px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; }
     .heat-date { font-size: 9px; color: #999; }
     .heat-count { font-size: 10px; font-weight: 700; color: #333; }
-
-    .legend {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 16px;
-      justify-content: center;
-    }
+    .legend { display: flex; align-items: center; gap: 8px; margin-top: 16px; justify-content: center; }
     .legend-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
     .legend-dot { width: 18px; height: 18px; border-radius: 4px; }
     .legend-lbl { font-size: 9px; color: #999; }
+
+    /* ── Profile panel ── */
+    #profile-panel {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: #fff; z-index: 100;
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex; flex-direction: column;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    #profile-panel.open { transform: translateX(0); }
+
+    #profile-header {
+      display: flex; align-items: center;
+      padding: 12px 16px; gap: 12px;
+      border-bottom: 1px solid #f0f0f0;
+      flex-shrink: 0;
+    }
+    #back-btn {
+      background: #f3f4f6; border: none; border-radius: 20px;
+      width: 36px; height: 36px; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #profile-title { font-size: 17px; font-weight: 700; color: #111; }
+
+    #ptabs {
+      display: flex; flex-shrink: 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .ptab {
+      flex: 1; padding: 12px 4px; border: none; background: none;
+      font-size: 13px; font-weight: 600; color: #bbb; cursor: pointer;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .ptab.active { color: var(--green-dark); border-bottom-color: var(--green-dark); }
+
+    #profile-content { flex: 1; overflow-y: auto; }
+    .ptab-pane { display: none; padding: 20px; padding-bottom: 32px; }
+    .ptab-pane.active { display: block; }
+
+    /* Profil tab */
+    .profile-avatar { text-align: center; margin-bottom: 20px; }
+    .avatar-emoji { font-size: 64px; line-height: 1.1; display: block; }
+    .profile-name-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; margin-top: 10px;
+    }
+    #profile-name {
+      font-size: 22px; font-weight: 700; color: #111;
+      border: none; border-bottom: 2px solid transparent;
+      text-align: center; background: transparent; outline: none;
+      max-width: 180px; width: auto;
+      transition: border-color 0.2s;
+    }
+    #profile-name:focus { border-bottom-color: var(--green-dark); }
+    .edit-icon { font-size: 13px; color: #ccc; }
+
+    .pstats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+    .pstat-card { background: #f3f4f6; border-radius: 14px; padding: 14px 12px; text-align: center; }
+    .pstat-val { font-size: 28px; font-weight: 700; color: var(--green-dark); }
+    .pstat-lbl { font-size: 11px; color: #666; margin-top: 3px; line-height: 1.3; }
+    .member-since { text-align: center; margin-top: 16px; font-size: 12px; color: #bbb; }
+
+    /* Calendrier tab */
+    .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .cal-nav-btn {
+      background: #f3f4f6; border: none; border-radius: 10px;
+      width: 38px; height: 38px; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cal-nav-btn:disabled { opacity: 0.25; pointer-events: none; }
+    .cal-month-label { font-size: 16px; font-weight: 700; color: #111; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .cal-head { text-align: center; font-size: 10px; color: #bbb; font-weight: 600; padding: 4px 0 6px; }
+    .cal-day {
+      aspect-ratio: 1; border-radius: 8px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 1px;
+    }
+    .cal-day.today { outline: 2px solid var(--green-dark); outline-offset: -1px; }
+    .cal-day-num { font-size: 11px; }
+    .cal-day-count { font-size: 9px; font-weight: 800; }
+
+    /* Badges tab */
+    .badge-group-title {
+      font-size: 11px; font-weight: 700; color: #aaa;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin: 20px 0 10px;
+    }
+    .badge-group-title:first-child { margin-top: 0; }
+    .badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .badge-card {
+      background: #f9fafb; border-radius: 14px;
+      padding: 12px 6px 10px;
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+    }
+    .badge-card.unlocked { background: #f0fdf4; }
+    .badge-card.locked { opacity: 0.32; }
+    .badge-em { font-size: 30px; line-height: 1.15; }
+    .badge-name { font-size: 10px; font-weight: 700; color: #222; line-height: 1.2; }
+    .badge-desc { font-size: 9px; color: #999; line-height: 1.3; }
   </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- Game screen -->
+  <!-- ── Game screen ── -->
   <div id="screen-game" class="screen active">
     <div id="score-row">
-      <span id="score-label">Score du jour</span>
-      <span id="score-value">0</span>
+      <button id="profile-btn" onclick="openProfile()" aria-label="Mon espace">👸</button>
+      <div id="score-right">
+        <span id="score-label">Score du jour</span>
+        <span id="score-value">0</span>
+      </div>
     </div>
     <div id="equation-area">
       <div id="equation">—</div>
@@ -242,23 +263,14 @@
     </div>
   </div>
 
-  <!-- Stats screen -->
+  <!-- ── Stats screen ── -->
   <div id="screen-stats" class="screen">
     <div id="stats-content">
       <p class="stats-title">Statistiques</p>
       <div class="summary-row">
-        <div class="summary-card">
-          <div class="summary-val" id="stat-today">0</div>
-          <div class="summary-lbl">Aujourd'hui</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-val" id="stat-total">0</div>
-          <div class="summary-lbl">Total 30j</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-val" id="stat-days">0</div>
-          <div class="summary-lbl">Jours actifs</div>
-        </div>
+        <div class="summary-card"><div class="summary-val" id="stat-today">0</div><div class="summary-lbl">Aujourd'hui</div></div>
+        <div class="summary-card"><div class="summary-val" id="stat-total">0</div><div class="summary-lbl">Total 30j</div></div>
+        <div class="summary-card"><div class="summary-val" id="stat-days">0</div><div class="summary-lbl">Jours actifs</div></div>
       </div>
       <p class="section-title">30 derniers jours</p>
       <div class="heat-grid" id="heat-grid"></div>
@@ -272,7 +284,7 @@
     </div>
   </div>
 
-  <!-- Tab bar -->
+  <!-- ── Tab bar ── -->
   <nav id="tabs">
     <button class="tab active" id="tab-game" onclick="switchTab('game')">
       <span class="tab-icon">🧮</span>Jeu
@@ -282,156 +294,332 @@
     </button>
   </nav>
 
+  <!-- ── Profile panel ── -->
+  <div id="profile-panel">
+    <div id="profile-header">
+      <button id="back-btn" onclick="closeProfile()">←</button>
+      <span id="profile-title">Mon espace</span>
+    </div>
+    <div id="ptabs">
+      <button class="ptab active" data-ptab="profil"    onclick="switchPTab('profil')">Profil</button>
+      <button class="ptab"        data-ptab="calendrier" onclick="switchPTab('calendrier')">Calendrier</button>
+      <button class="ptab"        data-ptab="badges"    onclick="switchPTab('badges')">Badges</button>
+    </div>
+    <div id="profile-content">
+      <!-- Profil -->
+      <div id="ptab-profil" class="ptab-pane active">
+        <div class="profile-avatar">
+          <span class="avatar-emoji">👸</span>
+          <div class="profile-name-row">
+            <input type="text" id="profile-name" value="Princesse" maxlength="20"
+                   onchange="saveName(this.value)" />
+            <span class="edit-icon">✏️</span>
+          </div>
+        </div>
+        <div class="pstats-grid" id="pstats-grid"></div>
+        <div class="member-since" id="member-since"></div>
+      </div>
+      <!-- Calendrier -->
+      <div id="ptab-calendrier" class="ptab-pane">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" id="cal-prev" onclick="changeMonth(-1)">‹</button>
+          <span class="cal-month-label" id="cal-label"></span>
+          <button class="cal-nav-btn" id="cal-next" onclick="changeMonth(1)">›</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+      <!-- Badges -->
+      <div id="ptab-badges" class="ptab-pane">
+        <div id="badges-wrap"></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 <script>
-  // ── Storage ──────────────────────────────────────────
-  function todayKey() {
-    return 'score:' + new Date().toISOString().slice(0, 10);
-  }
-  function dateKey(d) {
-    return 'score:' + d.toISOString().slice(0, 10);
-  }
-  function incrementToday() {
-    const key = todayKey();
-    const n = (parseInt(localStorage.getItem(key) || '0', 10)) + 1;
-    localStorage.setItem(key, n);
-    return n;
-  }
-  function getScores(days) {
-    const out = [];
-    const today = new Date();
-    for (let i = days - 1; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(today.getDate() - i);
-      const key = dateKey(d);
-      const dateStr = d.toISOString().slice(0, 10);
-      out.push({ date: dateStr, count: parseInt(localStorage.getItem(key) || '0', 10) });
-    }
-    return out;
-  }
+// ── Storage ──────────────────────────────────────────────────────────────────
+function todayKey() { return 'score:' + new Date().toISOString().slice(0, 10); }
+function dateKey(d) { return 'score:' + d.toISOString().slice(0, 10); }
 
-  // ── Math ─────────────────────────────────────────────
-  const OPS = ['+', '−', '×', '÷'];
-  function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-  function nextEq() {
-    const op = OPS[Math.floor(Math.random() * OPS.length)];
-    let a, b, answer;
-    if (op === '+') { a = rand(1, 99); b = rand(1, 99); answer = a + b; }
-    else if (op === '−') { a = rand(2, 99); b = rand(1, a); answer = a - b; }
-    else if (op === '×') { a = rand(1, 12); b = rand(1, 12); answer = a * b; }
-    else { b = rand(2, 12); const q = rand(1, 12); a = b * q; answer = q; }
-    return { display: a + ' ' + op + ' ' + b, answer };
+function incrementToday() {
+  const key = todayKey();
+  const n = (parseInt(localStorage.getItem(key) || '0', 10)) + 1;
+  localStorage.setItem(key, n);
+  return n;
+}
+
+function getScores(days) {
+  const out = [], today = new Date();
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today); d.setDate(today.getDate() - i);
+    const ds = d.toISOString().slice(0, 10);
+    out.push({ date: ds, count: parseInt(localStorage.getItem('score:' + ds) || '0', 10) });
   }
+  return out;
+}
 
-  // ── Game state ────────────────────────────────────────
-  let eq = nextEq();
-  let input = '';
-  let locked = false;
-  let sessionScore = parseInt(localStorage.getItem(todayKey()) || '0', 10);
-
-  const elEq       = document.getElementById('equation');
-  const elInput    = document.getElementById('input-display');
-  const elScore    = document.getElementById('score-value');
-  const elGame     = document.getElementById('screen-game');
-  const elTheme    = document.getElementById('theme-meta');
-
-  function render() {
-    elEq.textContent = eq.display + ' =';
-    elInput.textContent = input || '?';
-    elScore.textContent = sessionScore;
+function getAllScoresMap() {
+  const out = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('score:'))
+      out[key.slice(6)] = parseInt(localStorage.getItem(key), 10) || 0;
   }
+  return out;
+}
 
-  function setBg(state) {
-    const colors = { neutral: '#ffffff', correct: '#22c55e', wrong: '#ef4444' };
-    const themes  = { neutral: '#ffffff', correct: '#22c55e', wrong: '#ef4444' };
-    elGame.style.backgroundColor = colors[state];
-    elTheme.setAttribute('content', themes[state]);
+function calcStats() {
+  const all = getAllScoresMap();
+  const vals = Object.values(all);
+  const total   = vals.reduce((s, v) => s + v, 0);
+  const bestDay = vals.length ? Math.max(...vals) : 0;
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; ; i++) {
+    const d = new Date(today); d.setDate(today.getDate() - i);
+    if ((all[d.toISOString().slice(0, 10)] || 0) > 0) streak++;
+    else break;
   }
+  const memberSince = Object.keys(all).filter(k => all[k] > 0).sort()[0] || null;
+  return { total, bestDay, streak, memberSince, all };
+}
 
-  function vibrate(pattern) {
-    if (navigator.vibrate) navigator.vibrate(pattern);
-  }
+// ── Math ─────────────────────────────────────────────────────────────────────
+const OPS = ['+', '−', '×', '÷'];
+function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function nextEq() {
+  const op = OPS[Math.floor(Math.random() * OPS.length)];
+  let a, b, answer;
+  if (op === '+')      { a = rand(1,99); b = rand(1,99); answer = a + b; }
+  else if (op === '−') { a = rand(2,99); b = rand(1,a);  answer = a - b; }
+  else if (op === '×') { a = rand(1,12); b = rand(1,12); answer = a * b; }
+  else { b = rand(2,12); const q = rand(1,12); a = b*q; answer = q; }
+  return { display: a + ' ' + op + ' ' + b, answer };
+}
 
-  function handleKey(key) {
-    if (locked) return;
-    if (key === '⌫') {
-      input = input.slice(0, -1);
-    } else if (key === '✓') {
-      if (!input) return;
-      locked = true;
-      const guess = parseInt(input, 10);
-      if (guess === eq.answer) {
-        setBg('correct');
-        vibrate(80);
-        sessionScore = incrementToday();
-        render();
-        setTimeout(() => { eq = nextEq(); input = ''; setBg('neutral'); render(); locked = false; }, 400);
-      } else {
-        setBg('wrong');
-        vibrate([80, 60, 80]);
-        setTimeout(() => { input = ''; setBg('neutral'); render(); locked = false; }, 800);
-      }
-      return;
+// ── Game ─────────────────────────────────────────────────────────────────────
+let eq = nextEq(), input = '', locked = false;
+let sessionScore = parseInt(localStorage.getItem(todayKey()) || '0', 10);
+
+const elEq    = document.getElementById('equation');
+const elInput = document.getElementById('input-display');
+const elScore = document.getElementById('score-value');
+const elGame  = document.getElementById('screen-game');
+const elTheme = document.getElementById('theme-meta');
+
+function render() {
+  elEq.textContent    = eq.display + ' =';
+  elInput.textContent = input || '?';
+  elScore.textContent = sessionScore;
+}
+
+function setBg(state) {
+  const c = { neutral:'#ffffff', correct:'#22c55e', wrong:'#ef4444' }[state];
+  elGame.style.backgroundColor = c;
+  elTheme.setAttribute('content', c);
+}
+
+function handleKey(key) {
+  if (locked) return;
+  if (key === '⌫') { input = input.slice(0,-1); }
+  else if (key === '✓') {
+    if (!input) return;
+    locked = true;
+    if (parseInt(input,10) === eq.answer) {
+      setBg('correct');
+      if (navigator.vibrate) navigator.vibrate(80);
+      sessionScore = incrementToday(); render();
+      setTimeout(() => { eq = nextEq(); input=''; setBg('neutral'); render(); locked=false; }, 400);
     } else {
-      if (input.length >= 4) return;
-      input += key;
+      setBg('wrong');
+      if (navigator.vibrate) navigator.vibrate([80,60,80]);
+      setTimeout(() => { input=''; setBg('neutral'); render(); locked=false; }, 800);
     }
-    render();
+    return;
+  } else {
+    if (input.length >= 4) return;
+    input += key;
   }
-
-  // Numpad events (touchstart for snappier feel)
-  document.querySelectorAll('.key').forEach(btn => {
-    btn.addEventListener('touchstart', e => { e.preventDefault(); handleKey(btn.dataset.key); }, { passive: false });
-    btn.addEventListener('click', () => handleKey(btn.dataset.key));
-  });
-
-  // ── Tabs ─────────────────────────────────────────────
-  function switchTab(tab) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('screen-' + tab).classList.add('active');
-    document.getElementById('tab-' + tab).classList.add('active');
-    if (tab === 'stats') renderStats();
-  }
-
-  // ── Stats ─────────────────────────────────────────────
-  function heatColor(count, max) {
-    if (count === 0) return '#f3f4f6';
-    const r = Math.min(count / Math.max(max, 1), 1);
-    if (r < 0.15) return '#bbf7d0';
-    if (r < 0.40) return '#4ade80';
-    if (r < 0.70) return '#16a34a';
-    return '#14532d';
-  }
-
-  function renderStats() {
-    const scores = getScores(30);
-    const total  = scores.reduce((s, d) => s + d.count, 0);
-    const active = scores.filter(d => d.count > 0).length;
-    const today  = scores[scores.length - 1]?.count ?? 0;
-    const max    = Math.max(...scores.map(d => d.count), 1);
-
-    document.getElementById('stat-today').textContent = today;
-    document.getElementById('stat-total').textContent = total;
-    document.getElementById('stat-days').textContent  = active;
-
-    const grid = document.getElementById('heat-grid');
-    grid.innerHTML = scores.map(({ date, count }) => {
-      const d = new Date(date + 'T00:00:00');
-      const label = d.getDate() + '/' + (d.getMonth() + 1);
-      return `<div class="heat-cell" style="background:${heatColor(count, max)}">
-        <span class="heat-date">${label}</span>
-        ${count > 0 ? `<span class="heat-count">${count}</span>` : ''}
-      </div>`;
-    }).join('');
-  }
-
-  // ── Init ──────────────────────────────────────────────
   render();
+}
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
+document.querySelectorAll('.key').forEach(btn => {
+  btn.addEventListener('touchstart', e => { e.preventDefault(); handleKey(btn.dataset.key); }, { passive:false });
+  btn.addEventListener('click', () => handleKey(btn.dataset.key));
+});
+
+// ── Main tabs ────────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('screen-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'stats') renderStats();
+}
+
+// ── Stats screen ─────────────────────────────────────────────────────────────
+function heatColor(count, max) {
+  if (count === 0) return '#f3f4f6';
+  const r = Math.min(count / Math.max(max, 1), 1);
+  if (r < 0.15) return '#bbf7d0';
+  if (r < 0.40) return '#4ade80';
+  if (r < 0.70) return '#16a34a';
+  return '#14532d';
+}
+
+function renderStats() {
+  const scores = getScores(30);
+  const total  = scores.reduce((s,d) => s+d.count, 0);
+  const active = scores.filter(d => d.count > 0).length;
+  const today  = scores[scores.length-1]?.count ?? 0;
+  const max    = Math.max(...scores.map(d => d.count), 1);
+  document.getElementById('stat-today').textContent = today;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-days').textContent  = active;
+  document.getElementById('heat-grid').innerHTML = scores.map(({date,count}) => {
+    const d = new Date(date+'T00:00:00');
+    const lbl = d.getDate()+'/'+(d.getMonth()+1);
+    return '<div class="heat-cell" style="background:'+heatColor(count,max)+'">'
+      +'<span class="heat-date">'+lbl+'</span>'
+      +(count>0?'<span class="heat-count">'+count+'</span>':'')
+      +'</div>';
+  }).join('');
+}
+
+// ── Profile panel ─────────────────────────────────────────────────────────────
+let calYear, calMonth, activePTab = 'profil';
+
+function openProfile() {
+  const now = new Date();
+  calYear  = now.getFullYear();
+  calMonth = now.getMonth();
+  document.getElementById('profile-panel').classList.add('open');
+  history.pushState({ panel:'profile' }, '');
+  renderPTab(activePTab);
+}
+function closeProfile() {
+  document.getElementById('profile-panel').classList.remove('open');
+}
+window.addEventListener('popstate', closeProfile);
+
+function switchPTab(tab) {
+  activePTab = tab;
+  document.querySelectorAll('.ptab').forEach(t => t.classList.toggle('active', t.dataset.ptab === tab));
+  document.querySelectorAll('.ptab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('ptab-' + tab).classList.add('active');
+  renderPTab(tab);
+}
+
+function renderPTab(tab) {
+  const stats = calcStats();
+  if (tab === 'profil')     renderProfilTab(stats);
+  else if (tab === 'calendrier') renderCalTab(stats);
+  else                      renderBadgesTab(stats);
+}
+
+// ── Profil tab ───────────────────────────────────────────────────────────────
+function saveName(v) { localStorage.setItem('profile:name', v.trim() || 'Princesse'); }
+
+function renderProfilTab(stats) {
+  document.getElementById('profile-name').value = localStorage.getItem('profile:name') || 'Princesse';
+
+  const earned = BADGES.filter(b => b.req(stats)).length;
+  document.getElementById('pstats-grid').innerHTML = [
+    { val: stats.total,               lbl: 'Réponses correctes' },
+    { val: stats.bestDay,             lbl: 'Meilleur jour' },
+    { val: stats.streak + ' 🔥',     lbl: 'Jours consécutifs' },
+    { val: earned + ' / ' + BADGES.length, lbl: 'Badges obtenus' },
+  ].map(({val,lbl}) =>
+    '<div class="pstat-card"><div class="pstat-val">'+val+'</div><div class="pstat-lbl">'+lbl+'</div></div>'
+  ).join('');
+
+  const ms = document.getElementById('member-since');
+  ms.textContent = stats.memberSince
+    ? 'Membre depuis le ' + new Date(stats.memberSince+'T00:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})
+    : '';
+}
+
+// ── Calendrier tab ────────────────────────────────────────────────────────────
+const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+function changeMonth(dir) {
+  calMonth += dir;
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  if (calMonth > 11) { calMonth = 0;  calYear++; }
+  renderCalTab(calcStats());
+}
+
+function renderCalTab(stats) {
+  const all    = stats.all;
+  const maxVal = Math.max(1, ...Object.values(all).filter(Boolean));
+  const todayStr = new Date().toISOString().slice(0,10);
+  const now    = new Date();
+
+  document.getElementById('cal-label').textContent = MONTHS[calMonth] + ' ' + calYear;
+  document.getElementById('cal-next').disabled =
+    calYear === now.getFullYear() && calMonth === now.getMonth();
+
+  const firstDow = ((new Date(calYear, calMonth, 1).getDay() + 6) % 7); // Mon=0
+  const lastDay  = new Date(calYear, calMonth+1, 0).getDate();
+
+  let html = ['L','M','M','J','V','S','D'].map(d => '<div class="cal-head">'+d+'</div>').join('');
+  for (let i=0; i<firstDow; i++) html += '<div></div>';
+  for (let d=1; d<=lastDay; d++) {
+    const ds  = calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const cnt = all[ds] || 0;
+    const bg  = heatColor(cnt, maxVal);
+    const txtColor = cnt > 0 ? '#fff' : '#999';
+    html += '<div class="cal-day'+(ds===todayStr?' today':'')+'" style="background:'+bg+'">'
+      +'<span class="cal-day-num" style="color:'+txtColor+'">'+d+'</span>'
+      +(cnt>0?'<span class="cal-day-count" style="color:'+txtColor+'">'+cnt+'</span>':'')
+      +'</div>';
   }
+  document.getElementById('cal-grid').innerHTML = html;
+}
+
+// ── Badges ────────────────────────────────────────────────────────────────────
+const BADGES = [
+  // Score total
+  { id:'b1',  emoji:'🌱', name:'Graine de Princesse', desc:'1ère bonne réponse',    group:'✨ Score total',   req: s => s.total >= 1    },
+  { id:'b2',  emoji:'🌸', name:'Fleur du Palais',     desc:'10 réponses',           group:'✨ Score total',   req: s => s.total >= 10   },
+  { id:'b3',  emoji:'🎀', name:'Damoiselle',          desc:'50 réponses',           group:'✨ Score total',   req: s => s.total >= 50   },
+  { id:'b4',  emoji:'👑', name:'Princesse',           desc:'100 réponses',          group:'✨ Score total',   req: s => s.total >= 100  },
+  { id:'b5',  emoji:'💎', name:'Duchesse',            desc:'250 réponses',          group:'✨ Score total',   req: s => s.total >= 250  },
+  { id:'b6',  emoji:'🏰', name:'Dame du Château',    desc:'500 réponses',          group:'✨ Score total',   req: s => s.total >= 500  },
+  { id:'b7',  emoji:'🦋', name:'Fée des Maths',      desc:'1 000 réponses',        group:'✨ Score total',   req: s => s.total >= 1000 },
+  { id:'b8',  emoji:'👸', name:'Reine des Maths',    desc:'5 000 réponses',        group:'✨ Score total',   req: s => s.total >= 5000 },
+  // Régularité
+  { id:'b9',  emoji:'🌷', name:'Fidèle',             desc:'3 jours de suite',      group:'🔥 Régularité',   req: s => s.streak >= 3  },
+  { id:'b10', emoji:'🌺', name:'Assidue',            desc:'7 jours de suite',      group:'🔥 Régularité',   req: s => s.streak >= 7  },
+  { id:'b11', emoji:'🌹', name:'Inébranlable',       desc:'14 jours de suite',     group:'🔥 Régularité',   req: s => s.streak >= 14 },
+  { id:'b12', emoji:'✨', name:'Légende',            desc:'30 jours de suite',     group:'🔥 Régularité',   req: s => s.streak >= 30 },
+  // Performance
+  { id:'b13', emoji:'⭐', name:'Étoilée',            desc:'10 en un seul jour',    group:'💫 Performance',  req: s => s.bestDay >= 10 },
+  { id:'b14', emoji:'💫', name:'Étincelante',        desc:'20 en un seul jour',    group:'💫 Performance',  req: s => s.bestDay >= 20 },
+  { id:'b15', emoji:'🎇', name:'Éblouissante',       desc:'50 en un seul jour',    group:'💫 Performance',  req: s => s.bestDay >= 50 },
+];
+
+function renderBadgesTab(stats) {
+  const groups = [...new Set(BADGES.map(b => b.group))];
+  document.getElementById('badges-wrap').innerHTML = groups.map(group => {
+    const cards = BADGES.filter(b => b.group === group).map(b => {
+      const ok = b.req(stats);
+      return '<div class="badge-card '+(ok?'unlocked':'locked')+'">'
+        +'<div class="badge-em">'+(ok?b.emoji:'🔒')+'</div>'
+        +'<div class="badge-name">'+b.name+'</div>'
+        +'<div class="badge-desc">'+b.desc+'</div>'
+        +'</div>';
+    }).join('');
+    return '<div class="badge-group-title">'+group+'</div><div class="badges-grid">'+cards+'</div>';
+  }).join('');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+render();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>
