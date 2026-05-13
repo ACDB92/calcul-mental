@@ -27,6 +27,45 @@
       --tab-inactive: #9ca3af;
     }
 
+    /* ── Dark mode ── */
+    .dark {
+      --bg: #0f172a; --text: #f1f5f9;
+      --numpad-key: #1e293b; --numpad-del: #334155;
+      --muted: #94a3b8; --tab-inactive: #64748b;
+    }
+    .dark #screen-stats { background: var(--bg); }
+    .dark .stats-title, .dark .section-title { color: var(--text); }
+    .dark .summary-card, .dark .pstat-card { background: #1e293b; }
+    .dark .summary-lbl, .dark .pstat-lbl { color: #94a3b8; }
+    .dark .heat-date { color: #64748b; }
+    .dark #tabs { background: var(--bg); border-top-color: #334155; }
+    .dark #profile-panel, .dark #settings-panel { background: var(--bg); }
+    .dark #profile-header, .dark #settings-header { border-bottom-color: #334155; }
+    .dark #back-btn, .dark #settings-back-btn { background: #1e293b; color: var(--text); }
+    .dark #profile-title, .dark #settings-title { color: var(--text); }
+    .dark #ptabs { border-bottom-color: #334155; }
+    .dark .ptab { color: #64748b; }
+    .dark .ptab.active { color: var(--green); }
+    .dark .badge-card { background: #1e293b; }
+    .dark .badge-card.unlocked { background: #14532d; }
+    .dark .badge-name { color: var(--text); }
+    .dark .badge-desc { color: #64748b; }
+    .dark .cal-nav-btn { background: #1e293b; color: var(--text); }
+    .dark .cal-month-label, .dark .cal-head { color: #94a3b8; }
+    .dark .badge-bar { background: #334155; }
+    .dark .badge-prog-text { color: #64748b; }
+    .dark #badge-toast { background: #1e293b; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+    .dark #toast-msg { color: #94a3b8; }
+    .dark #profile-name { color: var(--text); }
+    .dark .member-since { color: #64748b; }
+    .dark .key:active { background: #334155; }
+    .dark .key-del:active, .dark .key-neg:active { background: #475569; }
+    .dark .set-section-title { color: #64748b; }
+    .dark .set-row span, .dark .set-row-col > span { color: var(--text); }
+    .dark .toggle-track { background: #334155; }
+    .dark .chip { border-color: #334155; color: #94a3b8; }
+    .dark .chip.active { background: #14532d; border-color: var(--green); color: var(--green); }
+
     html, body {
       height: 100%; overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -52,8 +91,8 @@
       display: flex; align-items: center;
       padding: 10px 14px 6px; gap: 8px;
     }
-    #profile-btn {
-      background: none; border: none; font-size: 26px;
+    #profile-btn, #settings-btn {
+      background: none; border: none; font-size: 24px;
       padding: 2px; cursor: pointer; line-height: 1;
       flex-shrink: 0;
     }
@@ -126,8 +165,8 @@
     .heat-date { font-size: 9px; color: #999; }
     .heat-badge { font-size: 14px; line-height: 1; }
 
-    /* ── Profile panel ── */
-    #profile-panel {
+    /* ── Shared panel styles ── */
+    #profile-panel, #settings-panel {
       position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       background: #fff; z-index: 100;
       transform: translateX(100%);
@@ -136,20 +175,22 @@
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
     }
-    #profile-panel.open { transform: translateX(0); }
+    #profile-panel.open, #settings-panel.open { transform: translateX(0); }
 
-    #profile-header {
+    #profile-header, #settings-header {
       display: flex; align-items: center;
       padding: 12px 16px; gap: 12px;
       border-bottom: 1px solid #f0f0f0; flex-shrink: 0;
     }
-    #back-btn {
+    #back-btn, #settings-back-btn {
       background: #f3f4f6; border: none; border-radius: 20px;
       width: 36px; height: 36px; font-size: 18px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
     }
     #profile-title { font-size: 17px; font-weight: 700; color: #111; }
+    #settings-title { font-size: 17px; font-weight: 700; color: #111; }
 
+    /* ── Profile panel ── */
     #ptabs { display: flex; flex-shrink: 0; border-bottom: 1px solid #f0f0f0; }
     .ptab {
       flex: 1; padding: 12px 4px; border: none; background: none;
@@ -223,6 +264,46 @@
     .badge-bar { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; }
     .badge-bar-fill { height: 100%; background: var(--green-dark); border-radius: 2px; }
 
+    /* ── Settings panel ── */
+    #settings-content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 32px; }
+    .set-section-title {
+      font-size: 11px; font-weight: 700; color: #aaa;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin: 24px 0 14px;
+    }
+    .set-section-title:first-child { margin-top: 0; }
+    .set-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .set-row span { font-size: 15px; font-weight: 500; color: var(--text); }
+    .set-row-col { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .set-row-col > span { font-size: 15px; font-weight: 500; color: var(--text); }
+
+    /* Toggle switch */
+    .toggle { position: relative; width: 46px; height: 28px; flex-shrink: 0; cursor: pointer; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0;
+      background: #d1d5db; border-radius: 14px;
+      transition: background 0.2s;
+    }
+    .toggle-track::after {
+      content: ''; position: absolute;
+      width: 22px; height: 22px; background: #fff;
+      border-radius: 50%; top: 3px; left: 3px;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle input:checked + .toggle-track { background: var(--green-dark); }
+    .toggle input:checked + .toggle-track::after { transform: translateX(18px); }
+
+    /* Chips */
+    .chip-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip {
+      padding: 8px 16px; border: 2px solid #e5e7eb; border-radius: 20px;
+      background: none; font-size: 15px; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    .chip.active { border-color: var(--green-dark); color: var(--green-dark); background: #f0fdf4; }
+
     /* ── Badge unlock toast ── */
     #badge-toast {
       position: fixed; top: 50%; left: 50%;
@@ -255,6 +336,7 @@
         <span id="bp-nxt">🌱</span>
       </div>
       <span id="bp-score">0</span>
+      <button id="settings-btn" onclick="openSettings()" aria-label="Réglages">⚙️</button>
     </div>
     <div id="equation-area">
       <div id="equation">—</div>
@@ -350,6 +432,54 @@
     </div>
   </div>
 
+  <!-- ── Settings panel ── -->
+  <div id="settings-panel">
+    <div id="settings-header">
+      <button id="settings-back-btn" onclick="closeSettings()">←</button>
+      <span id="settings-title">Réglages</span>
+    </div>
+    <div id="settings-content">
+      <div class="set-section-title">Jeu</div>
+
+      <div class="set-row">
+        <span>Vibration</span>
+        <label class="toggle">
+          <input type="checkbox" id="set-vib" onchange="toggleVibration(this.checked)">
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+
+      <div class="set-row-col">
+        <span>Opérateurs</span>
+        <div class="chip-group" id="set-ops-group">
+          <button class="chip" data-op="+" onclick="toggleOp('+')">+</button>
+          <button class="chip" data-op="−" onclick="toggleOp('−')">−</button>
+          <button class="chip" data-op="×" onclick="toggleOp('×')">×</button>
+          <button class="chip" data-op="÷" onclick="toggleOp('÷')">÷</button>
+        </div>
+      </div>
+
+      <div class="set-row-col">
+        <span>Difficulté</span>
+        <div class="chip-group" id="set-diff-group">
+          <button class="chip" data-diff="easy"   onclick="setDifficulty('easy')">Facile</button>
+          <button class="chip" data-diff="normal" onclick="setDifficulty('normal')">Normal</button>
+          <button class="chip" data-diff="hard"   onclick="setDifficulty('hard')">Difficile</button>
+        </div>
+      </div>
+
+      <div class="set-section-title">Affichage</div>
+
+      <div class="set-row">
+        <span>Mode nuit</span>
+        <label class="toggle">
+          <input type="checkbox" id="set-dark" onchange="toggleDark(this.checked)">
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
   <!-- ── Badge unlock toast ── -->
   <div id="badge-toast">
     <span id="toast-emoji">👑</span>
@@ -387,6 +517,39 @@ function badgeForScore(n) {
 function nextBadgeFor(n) {
   return DAILY_BADGES.find(d => n < d.threshold) || null;
 }
+
+// ── Settings ──────────────────────────────────────────────────────────────────
+const settings = {
+  vibration: true,
+  ops: { '+': true, '−': true, '×': true, '÷': true },
+  difficulty: 'hard',
+  darkMode: false,
+};
+
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem('settings');
+    if (raw) Object.assign(settings, JSON.parse(raw));
+  } catch(e) {}
+}
+
+function saveSettings() {
+  localStorage.setItem('settings', JSON.stringify(settings));
+}
+
+function applyDarkMode() {
+  document.documentElement.classList.toggle('dark', settings.darkMode);
+  const neutral = settings.darkMode ? '#0f172a' : '#ffffff';
+  document.getElementById('theme-meta').setAttribute('content', neutral);
+  if (elGame) elGame.style.backgroundColor = neutral;
+}
+
+// ── Difficulty presets ────────────────────────────────────────────────────────
+const DIFFICULTY = {
+  easy:   { rng: [1,  20],  mul: [1,  10], divD: [2, 10], divQ: [1, 10], negSub: false },
+  normal: { rng: [1,  99],  mul: [1,  20], divD: [2, 15], divQ: [1, 20], negSub: false },
+  hard:   { rng: [10, 999], mul: [2, 100], divD: [2, 25], divQ: [1, 40], negSub: true  },
+};
 
 // ── Storage ───────────────────────────────────────────────────────────────────
 function todayKey() { return 'score:' + new Date().toISOString().slice(0, 10); }
@@ -438,27 +601,38 @@ function calcStats() {
 // ── Math ──────────────────────────────────────────────────────────────────────
 const OPS = ['+', '−', '×', '÷'];
 function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
 function nextEq() {
-  const op = OPS[Math.floor(Math.random() * OPS.length)];
+  const activeOps = OPS.filter(op => settings.ops[op]);
+  if (!activeOps.length) activeOps.push('+');
+  const op = activeOps[Math.floor(Math.random() * activeOps.length)];
+  const d = DIFFICULTY[settings.difficulty];
   let a, b, answer;
-  if (op === '+')      { a = rand(10,999); b = rand(10,999); answer = a + b; }
-  else if (op === '−') { a = rand(1,999);  b = rand(1,999);  answer = a - b; }
-  else if (op === '×') { a = rand(2,100);  b = rand(2,100);  answer = a * b; }
-  else { b = rand(2,25); const q = rand(1,40); a = b*q; answer = q; }
+  if (op === '+') {
+    a = rand(d.rng[0], d.rng[1]); b = rand(d.rng[0], d.rng[1]); answer = a + b;
+  } else if (op === '−') {
+    a = rand(d.rng[0], d.rng[1]); b = rand(d.rng[0], d.rng[1]);
+    if (!d.negSub && b > a) { const t = a; a = b; b = t; }
+    answer = a - b;
+  } else if (op === '×') {
+    a = rand(d.mul[0], d.mul[1]); b = rand(d.mul[0], d.mul[1]); answer = a * b;
+  } else {
+    b = rand(d.divD[0], d.divD[1]); const q = rand(d.divQ[0], d.divQ[1]); a = b * q; answer = q;
+  }
   return { display: a + ' ' + op + ' ' + b, answer };
 }
 
 // ── Game ──────────────────────────────────────────────────────────────────────
-let eq = nextEq(), input = '', locked = false;
+let eq, input = '', locked = false;
 let sessionScore = parseInt(localStorage.getItem(todayKey()) || '0', 10);
 
-const elEq    = document.getElementById('equation');
-const elInput = document.getElementById('input-display');
-const elGame  = document.getElementById('screen-game');
-const elTheme = document.getElementById('theme-meta');
-const elBpCur = document.getElementById('bp-cur');
-const elBpFill= document.getElementById('bp-fill');
-const elBpNxt = document.getElementById('bp-nxt');
+const elEq      = document.getElementById('equation');
+const elInput   = document.getElementById('input-display');
+const elGame    = document.getElementById('screen-game');
+const elTheme   = document.getElementById('theme-meta');
+const elBpCur   = document.getElementById('bp-cur');
+const elBpFill  = document.getElementById('bp-fill');
+const elBpNxt   = document.getElementById('bp-nxt');
 const elBpScore = document.getElementById('bp-score');
 
 let toastTimer = null;
@@ -475,16 +649,16 @@ function showBadgeToast(badge) {
 function renderBadgeProgress(n) {
   const cur = badgeForScore(n);
   const nxt = nextBadgeFor(n);
-  elBpCur.textContent  = cur ? cur.emoji : '—';
+  elBpCur.textContent   = cur ? cur.emoji : '—';
   elBpScore.textContent = n;
   if (nxt) {
     const prevT = cur ? cur.threshold : 0;
     const pct = Math.round((n - prevT) / (nxt.threshold - prevT) * 100);
     elBpFill.style.width = Math.min(pct, 100) + '%';
-    elBpNxt.textContent = nxt.emoji;
+    elBpNxt.textContent  = nxt.emoji;
   } else {
     elBpFill.style.width = '100%';
-    elBpNxt.textContent = '✨';
+    elBpNxt.textContent  = '✨';
   }
 }
 
@@ -495,30 +669,31 @@ function render() {
 }
 
 function setBg(state) {
-  const c = { neutral:'#ffffff', correct:'#22c55e', wrong:'#ef4444' }[state];
+  const neutral = settings.darkMode ? '#0f172a' : '#ffffff';
+  const c = { neutral, correct: '#22c55e', wrong: '#ef4444' }[state];
   elGame.style.backgroundColor = c;
   elTheme.setAttribute('content', c);
 }
 
 function handleKey(key) {
   if (locked) return;
-  if (key === '⌫') { input = input.slice(0,-1); }
+  if (key === '⌫') { input = input.slice(0, -1); }
   else if (key === '−') { if (input === '') input = '-'; }
   else if (key === '✓') {
     if (!input) return;
     locked = true;
-    if (parseInt(input,10) === eq.answer) {
+    if (parseInt(input, 10) === eq.answer) {
       setBg('correct');
-      if (navigator.vibrate) navigator.vibrate(80);
+      if (settings.vibration && navigator.vibrate) navigator.vibrate(80);
       const prevBadge = badgeForScore(sessionScore);
       sessionScore = incrementToday(); render();
       const newBadge = badgeForScore(sessionScore);
       if (newBadge && newBadge !== prevBadge) showBadgeToast(newBadge);
-      setTimeout(() => { eq = nextEq(); input=''; setBg('neutral'); render(); locked=false; }, 400);
+      setTimeout(() => { eq = nextEq(); input = ''; setBg('neutral'); render(); locked = false; }, 400);
     } else {
       setBg('wrong');
-      if (navigator.vibrate) navigator.vibrate([80,60,80]);
-      setTimeout(() => { input=''; setBg('neutral'); render(); locked=false; }, 800);
+      if (settings.vibration && navigator.vibrate) navigator.vibrate([80, 60, 80]);
+      setTimeout(() => { input = ''; setBg('neutral'); render(); locked = false; }, 800);
     }
     return;
   } else {
@@ -529,7 +704,7 @@ function handleKey(key) {
 }
 
 document.querySelectorAll('.key').forEach(btn => {
-  btn.addEventListener('touchstart', e => { e.preventDefault(); handleKey(btn.dataset.key); }, { passive:false });
+  btn.addEventListener('touchstart', e => { e.preventDefault(); handleKey(btn.dataset.key); }, { passive: false });
   btn.addEventListener('click', () => handleKey(btn.dataset.key));
 });
 
@@ -555,22 +730,22 @@ function heatColor(count) {
 function renderStats() {
   const scores = getScores(30);
   const active = scores.filter(d => d.count > 0).length;
-  const todayCount = scores[scores.length-1]?.count ?? 0;
+  const todayCount = scores[scores.length - 1]?.count ?? 0;
   const todayBadge = badgeForScore(todayCount);
 
   const stats = calcStats();
-  document.getElementById('stat-today').textContent = todayBadge ? todayBadge.emoji : (todayCount > 0 ? todayCount : '—');
+  document.getElementById('stat-today').textContent  = todayBadge ? todayBadge.emoji : (todayCount > 0 ? todayCount : '—');
   document.getElementById('stat-streak').textContent = stats.streak + ' 🔥';
   document.getElementById('stat-days').textContent   = active;
 
-  document.getElementById('heat-grid').innerHTML = scores.map(({date,count}) => {
-    const d = new Date(date+'T00:00:00');
-    const lbl = d.getDate()+'/'+(d.getMonth()+1);
+  document.getElementById('heat-grid').innerHTML = scores.map(({ date, count }) => {
+    const d = new Date(date + 'T00:00:00');
+    const lbl = d.getDate() + '/' + (d.getMonth() + 1);
     const badge = badgeForScore(count);
-    return '<div class="heat-cell" style="background:'+heatColor(count)+'">'
-      +'<span class="heat-date">'+lbl+'</span>'
-      +(badge ? '<span class="heat-badge">'+badge.emoji+'</span>' : '')
-      +'</div>';
+    return '<div class="heat-cell" style="background:' + heatColor(count) + '">'
+      + '<span class="heat-date">' + lbl + '</span>'
+      + (badge ? '<span class="heat-badge">' + badge.emoji + '</span>' : '')
+      + '</div>';
   }).join('');
 }
 
@@ -581,13 +756,12 @@ function openProfile() {
   const now = new Date();
   calYear = now.getFullYear(); calMonth = now.getMonth();
   document.getElementById('profile-panel').classList.add('open');
-  history.pushState({ panel:'profile' }, '');
+  history.pushState({ panel: 'profile' }, '');
   renderPTab(activePTab);
 }
 function closeProfile() {
   document.getElementById('profile-panel').classList.remove('open');
 }
-window.addEventListener('popstate', closeProfile);
 
 function switchPTab(tab) {
   activePTab = tab;
@@ -614,17 +788,17 @@ function renderProfilTab(stats) {
   const streakBadge = STREAK_BADGES.slice().reverse().find(b => stats.streak >= b.threshold);
 
   document.getElementById('pstats-grid').innerHTML = [
-    { val: todayBadge ? todayBadge.emoji + ' ' + todayScore : todayScore || '—', lbl: "Badge du jour" },
-    { val: stats.bestDay,           lbl: 'Meilleur score / jour' },
-    { val: stats.streak + ' 🔥',   lbl: 'Jours consécutifs' },
+    { val: todayBadge ? todayBadge.emoji + ' ' + todayScore : todayScore || '—', lbl: 'Badge du jour' },
+    { val: stats.bestDay,          lbl: 'Meilleur score / jour' },
+    { val: stats.streak + ' 🔥',  lbl: 'Jours consécutifs' },
     { val: streakBadge ? streakBadge.emoji + ' ' + streakBadge.name : '—', lbl: 'Badge fidélité' },
-  ].map(({val,lbl}) =>
-    '<div class="pstat-card"><div class="pstat-val">'+val+'</div><div class="pstat-lbl">'+lbl+'</div></div>'
+  ].map(({ val, lbl }) =>
+    '<div class="pstat-card"><div class="pstat-val">' + val + '</div><div class="pstat-lbl">' + lbl + '</div></div>'
   ).join('');
 
   const ms = document.getElementById('member-since');
   ms.textContent = stats.memberSince
-    ? 'Membre depuis le ' + new Date(stats.memberSince+'T00:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})
+    ? 'Membre depuis le ' + new Date(stats.memberSince + 'T00:00:00').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
     : '';
 }
 
@@ -639,30 +813,30 @@ function changeMonth(dir) {
 }
 
 function renderCalTab(stats) {
-  const all     = stats.all;
-  const todayStr = new Date().toISOString().slice(0,10);
-  const now     = new Date();
+  const all      = stats.all;
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const now      = new Date();
 
   document.getElementById('cal-label').textContent = MONTHS[calMonth] + ' ' + calYear;
   document.getElementById('cal-next').disabled =
     calYear === now.getFullYear() && calMonth === now.getMonth();
 
   const firstDow = ((new Date(calYear, calMonth, 1).getDay() + 6) % 7);
-  const lastDay  = new Date(calYear, calMonth+1, 0).getDate();
+  const lastDay  = new Date(calYear, calMonth + 1, 0).getDate();
 
-  let html = ['L','M','M','J','V','S','D'].map(d => '<div class="cal-head">'+d+'</div>').join('');
-  for (let i=0; i<firstDow; i++) html += '<div></div>';
+  let html = ['L','M','M','J','V','S','D'].map(d => '<div class="cal-head">' + d + '</div>').join('');
+  for (let i = 0; i < firstDow; i++) html += '<div></div>';
 
-  for (let d=1; d<=lastDay; d++) {
-    const ds    = calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+  for (let d = 1; d <= lastDay; d++) {
+    const ds    = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
     const cnt   = all[ds] || 0;
     const badge = badgeForScore(cnt);
     const bg    = heatColor(cnt);
     const txtColor = cnt > 0 ? '#555' : '#bbb';
-    html += '<div class="cal-day'+(ds===todayStr?' today':'')+'" style="background:'+bg+'">'
-      +'<span class="cal-day-num" style="color:'+txtColor+'">'+d+'</span>'
-      +(badge ? '<span class="cal-day-badge">'+badge.emoji+'</span>' : '')
-      +'</div>';
+    html += '<div class="cal-day' + (ds === todayStr ? ' today' : '') + '" style="background:' + bg + '">'
+      + '<span class="cal-day-num" style="color:' + txtColor + '">' + d + '</span>'
+      + (badge ? '<span class="cal-day-badge">' + badge.emoji + '</span>' : '')
+      + '</div>';
   }
   document.getElementById('cal-grid').innerHTML = html;
 }
@@ -671,55 +845,112 @@ function renderCalTab(stats) {
 function renderBadgesTab(stats) {
   const todayScore = parseInt(localStorage.getItem(todayKey()) || '0', 10);
 
-  // Daily badge ladder — progress for today
   let dailyCards = DAILY_BADGES.map(b => {
     const earned = todayScore >= b.threshold;
     let progHtml = '';
     if (!earned) {
-      const prevIdx  = DAILY_BADGES.indexOf(b) - 1;
-      const prevT    = prevIdx >= 0 ? DAILY_BADGES[prevIdx].threshold : 0;
-      const pct      = Math.min(Math.round((todayScore - prevT) / (b.threshold - prevT) * 100), 100);
-      const cur      = Math.min(todayScore, b.threshold);
+      const prevIdx = DAILY_BADGES.indexOf(b) - 1;
+      const prevT   = prevIdx >= 0 ? DAILY_BADGES[prevIdx].threshold : 0;
+      const pct     = Math.min(Math.round((todayScore - prevT) / (b.threshold - prevT) * 100), 100);
       progHtml = '<div class="badge-prog">'
-        +'<div class="badge-prog-text">'+cur+' / '+b.threshold+'</div>'
-        +'<div class="badge-bar"><div class="badge-bar-fill" style="width:'+Math.max(pct,0)+'%"></div></div>'
-        +'</div>';
+        + '<div class="badge-prog-text">' + Math.min(todayScore, b.threshold) + ' / ' + b.threshold + '</div>'
+        + '<div class="badge-bar"><div class="badge-bar-fill" style="width:' + Math.max(pct, 0) + '%"></div></div>'
+        + '</div>';
     }
-    return '<div class="badge-card '+(earned?'unlocked':'locked')+'">'
-      +'<div class="badge-em">'+(earned?b.emoji:'🔒')+'</div>'
-      +'<div class="badge-name">'+b.name+'</div>'
-      +'<div class="badge-desc">'+(earned?'✓ atteint aujourd\'hui':b.threshold+' réponses/jour')+'</div>'
-      +progHtml
-      +'</div>';
+    return '<div class="badge-card ' + (earned ? 'unlocked' : 'locked') + '">'
+      + '<div class="badge-em">' + (earned ? b.emoji : '🔒') + '</div>'
+      + '<div class="badge-name">' + b.name + '</div>'
+      + '<div class="badge-desc">' + (earned ? '✓ atteint aujourd\'hui' : b.threshold + ' réponses/jour') + '</div>'
+      + progHtml + '</div>';
   }).join('');
 
-  // Streak badges
   let streakCards = STREAK_BADGES.map(b => {
     const earned = stats.streak >= b.threshold;
     let progHtml = '';
     if (!earned) {
       const pct = Math.round(stats.streak / b.threshold * 100);
       progHtml = '<div class="badge-prog">'
-        +'<div class="badge-prog-text">'+stats.streak+' / '+b.threshold+' jours</div>'
-        +'<div class="badge-bar"><div class="badge-bar-fill" style="width:'+pct+'%"></div></div>'
-        +'</div>';
+        + '<div class="badge-prog-text">' + stats.streak + ' / ' + b.threshold + ' jours</div>'
+        + '<div class="badge-bar"><div class="badge-bar-fill" style="width:' + pct + '%"></div></div>'
+        + '</div>';
     }
-    return '<div class="badge-card '+(earned?'unlocked':'locked')+'">'
-      +'<div class="badge-em">'+(earned?b.emoji:'🔒')+'</div>'
-      +'<div class="badge-name">'+b.name+'</div>'
-      +'<div class="badge-desc">'+b.threshold+' jours de suite</div>'
-      +progHtml
-      +'</div>';
+    return '<div class="badge-card ' + (earned ? 'unlocked' : 'locked') + '">'
+      + '<div class="badge-em">' + (earned ? b.emoji : '🔒') + '</div>'
+      + '<div class="badge-name">' + b.name + '</div>'
+      + '<div class="badge-desc">' + b.threshold + ' jours de suite</div>'
+      + progHtml + '</div>';
   }).join('');
 
   document.getElementById('badges-wrap').innerHTML =
     '<div class="badge-group-title">✨ Médailles du jour</div>'
-    +'<div class="badges-grid">'+dailyCards+'</div>'
-    +'<div class="badge-group-title">🔥 Fidélité</div>'
-    +'<div class="badges-grid">'+streakCards+'</div>';
+    + '<div class="badges-grid">' + dailyCards + '</div>'
+    + '<div class="badge-group-title">🔥 Fidélité</div>'
+    + '<div class="badges-grid">' + streakCards + '</div>';
 }
 
+// ── Settings panel ────────────────────────────────────────────────────────────
+function openSettings() {
+  document.getElementById('settings-panel').classList.add('open');
+  history.pushState({ panel: 'settings' }, '');
+  renderSettingsPanel();
+}
+function closeSettings() {
+  document.getElementById('settings-panel').classList.remove('open');
+}
+
+function renderSettingsPanel() {
+  document.getElementById('set-vib').checked  = settings.vibration;
+  document.getElementById('set-dark').checked = settings.darkMode;
+
+  document.querySelectorAll('#set-ops-group .chip').forEach(btn => {
+    btn.classList.toggle('active', !!settings.ops[btn.dataset.op]);
+  });
+  document.querySelectorAll('#set-diff-group .chip').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.diff === settings.difficulty);
+  });
+}
+
+function toggleVibration(v) {
+  settings.vibration = v;
+  saveSettings();
+}
+
+function toggleOp(op) {
+  const activeCount = OPS.filter(o => settings.ops[o]).length;
+  if (settings.ops[op] && activeCount === 1) return; // keep at least one
+  settings.ops[op] = !settings.ops[op];
+  saveSettings();
+  document.querySelectorAll('#set-ops-group .chip').forEach(btn => {
+    btn.classList.toggle('active', !!settings.ops[btn.dataset.op]);
+  });
+  eq = nextEq(); render();
+}
+
+function setDifficulty(d) {
+  settings.difficulty = d;
+  saveSettings();
+  document.querySelectorAll('#set-diff-group .chip').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.diff === d);
+  });
+  eq = nextEq(); render();
+}
+
+function toggleDark(v) {
+  settings.darkMode = v;
+  applyDarkMode();
+  saveSettings();
+}
+
+// ── Popstate (back button) ────────────────────────────────────────────────────
+window.addEventListener('popstate', () => {
+  closeProfile();
+  closeSettings();
+});
+
 // ── Init ──────────────────────────────────────────────────────────────────────
+loadSettings();
+applyDarkMode();
+eq = nextEq();
 render();
 
 if ('serviceWorker' in navigator) {
