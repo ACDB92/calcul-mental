@@ -304,6 +304,18 @@
     }
     .chip.active { border-color: var(--green-dark); color: var(--green-dark); background: #f0fdf4; }
 
+    /* ── Hint ── */
+    #hint-area { min-height: 32px; display: flex; align-items: center; justify-content: center; }
+    #hint-btn {
+      background: none; border: 1px solid #e5e7eb; border-radius: 12px;
+      font-size: 13px; color: var(--muted); cursor: pointer; padding: 4px 12px;
+    }
+    #hint-text {
+      display: none; font-size: 14px; color: var(--muted);
+      font-style: italic; text-align: center; line-height: 1.6; padding: 0 16px;
+    }
+    .dark #hint-btn { border-color: #334155; }
+
     /* ── Badge unlock toast ── */
     #badge-toast {
       position: fixed; top: 50%; left: 50%;
@@ -340,6 +352,10 @@
     </div>
     <div id="equation-area">
       <div id="equation">—</div>
+      <div id="hint-area">
+        <button id="hint-btn" onclick="showHint()">💡 indice</button>
+        <div id="hint-text"></div>
+      </div>
       <div id="input-display">?</div>
     </div>
     <div id="numpad">
@@ -622,6 +638,68 @@ function nextEq() {
   return { display: a + ' ' + op + ' ' + b, answer };
 }
 
+// ── Hint generation ──────────────────────────────────────────────────────────
+function generateHint({ a, b, operator: op }) {
+  if (op === '+') {
+    const br = Math.round(b / 10) * 10;
+    if (br === 0 || br === b) return a + ' + ' + b + ' = ' + (a + b);
+    const partial = a + br;
+    const rem = b - br;
+    return rem > 0
+      ? a + ' + ' + br + ' = ' + partial + ', + ' + rem + ' = ?'
+      : a + ' + ' + br + ' = ' + partial + ', − ' + (-rem) + ' = ?';
+  }
+  if (op === '−') {
+    if (a < b) return '−(' + b + ' − ' + a + ') = ?';
+    const br = Math.round(b / 10) * 10;
+    if (br === 0 || br === b) return a + ' − ' + b + ' = ' + (a - b);
+    const partial = a - br;
+    const rem = b - br;
+    return rem > 0
+      ? a + ' − ' + br + ' = ' + partial + ', − ' + rem + ' = ?'
+      : a + ' − ' + br + ' = ' + partial + ', + ' + (-rem) + ' = ?';
+  }
+  if (op === '×') {
+    const small = Math.min(a, b), big = Math.max(a, b);
+    if (small < 10) {
+      const bigR = Math.floor(big / 10) * 10, bigRem = big - bigR;
+      if (bigRem === 0) return small + ' × ' + big + ' = ' + (small * big);
+      return small + ' × ' + bigR + ' = ' + (small * bigR) + ', + ' + small + ' × ' + bigRem + ' = ?';
+    }
+    const rounded = Math.round(small / 10) * 10;
+    const diff = rounded - small;
+    if (diff === 0) return small + ' × ' + big + ' = ' + (small * big);
+    const partial = rounded * big;
+    return diff > 0
+      ? rounded + ' × ' + big + ' = ' + partial + ', − ' + diff + ' × ' + big + ' = ?'
+      : rounded + ' × ' + big + ' = ' + partial + ', + ' + (-diff) + ' × ' + big + ' = ?';
+  }
+  if (op === '÷') {
+    const q = a / b;
+    if (q >= 10) {
+      const q10 = Math.floor(q / 10) * 10;
+      const partial = b * q10;
+      const reste = a - partial;
+      return b + ' × ' + q10 + ' = ' + partial + (reste > 0 ? ', reste ' + reste + ' ÷ ' + b + ' = ?' : ', exact !');
+    }
+    return b + ' × ? = ' + a;
+  }
+}
+
+function showHint() {
+  document.getElementById('hint-btn').style.display = 'none';
+  const el = document.getElementById('hint-text');
+  el.textContent = generateHint(eq);
+  el.style.display = 'block';
+}
+
+function resetHint() {
+  document.getElementById('hint-btn').style.display = '';
+  const el = document.getElementById('hint-text');
+  el.style.display = 'none';
+  el.textContent = '';
+}
+
 // ── Game ──────────────────────────────────────────────────────────────────────
 let eq, input = '', locked = false;
 let sessionScore = parseInt(localStorage.getItem(todayKey()) || '0', 10);
@@ -689,7 +767,7 @@ function handleKey(key) {
       sessionScore = incrementToday(); render();
       const newBadge = badgeForScore(sessionScore);
       if (newBadge && newBadge !== prevBadge) showBadgeToast(newBadge);
-      setTimeout(() => { eq = nextEq(); input = ''; setBg('neutral'); render(); locked = false; }, 400);
+      setTimeout(() => { eq = nextEq(); input = ''; setBg('neutral'); render(); resetHint(); locked = false; }, 400);
     } else {
       setBg('wrong');
       if (settings.vibration && navigator.vibrate) navigator.vibrate([80, 60, 80]);
