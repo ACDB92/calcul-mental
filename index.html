@@ -304,17 +304,25 @@
     }
     .chip.active { border-color: var(--green-dark); color: var(--green-dark); background: #f0fdf4; }
 
+    /* ── Diff label ── */
+    #diff-row { text-align: center; padding: 0 14px 6px; }
+    #diff-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+
     /* ── Hint ── */
-    #hint-area { min-height: 32px; display: flex; align-items: center; justify-content: center; }
     #hint-btn {
-      background: none; border: 1px solid #e5e7eb; border-radius: 12px;
-      font-size: 13px; color: var(--muted); cursor: pointer; padding: 4px 12px;
+      background: none; border: none; font-size: 20px;
+      padding: 2px; cursor: pointer; line-height: 1; flex-shrink: 0;
+      opacity: 0.7;
     }
+    #hint-btn:disabled { opacity: 0.25; }
     #hint-text {
-      display: none; font-size: 14px; color: var(--muted);
-      font-style: italic; text-align: center; line-height: 1.6; padding: 0 16px;
+      display: none;
+      background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px;
+      padding: 10px 16px; font-size: 14px; color: #166534;
+      font-style: italic; text-align: center; line-height: 1.6;
+      max-width: 320px;
     }
-    .dark #hint-btn { border-color: #334155; }
+    .dark #hint-text { background: #14532d; border-color: #16a34a; color: #bbf7d0; }
 
     /* ── Badge unlock toast ── */
     #badge-toast {
@@ -348,15 +356,14 @@
         <span id="bp-nxt">🌱</span>
       </div>
       <span id="bp-score">0</span>
+      <button id="hint-btn" onclick="showHint()" aria-label="Indice">💡</button>
       <button id="settings-btn" onclick="openSettings()" aria-label="Réglages">⚙️</button>
     </div>
+    <div id="diff-row"><span id="diff-label"></span></div>
     <div id="equation-area">
       <div id="equation">—</div>
-      <div id="hint-area">
-        <button id="hint-btn" onclick="showHint()">💡 indice</button>
-        <div id="hint-text"></div>
-      </div>
       <div id="input-display">?</div>
+      <div id="hint-text"></div>
     </div>
     <div id="numpad">
       <div class="numpad-row">
@@ -687,17 +694,31 @@ function generateHint({ a, b, operator: op }) {
 }
 
 function showHint() {
-  document.getElementById('hint-btn').style.display = 'none';
+  const btn = document.getElementById('hint-btn');
+  btn.disabled = true;
   const el = document.getElementById('hint-text');
   el.textContent = generateHint(eq);
   el.style.display = 'block';
 }
 
 function resetHint() {
-  document.getElementById('hint-btn').style.display = '';
+  const btn = document.getElementById('hint-btn');
+  btn.disabled = false;
   const el = document.getElementById('hint-text');
   el.style.display = 'none';
   el.textContent = '';
+}
+
+function updateDiffLabel() {
+  const cfg = {
+    easy:   { label: 'Facile',    color: '#16a34a' },
+    normal: { label: 'Normal',    color: '#f59e0b' },
+    hard:   { label: 'Difficile', color: '#ef4444' },
+  };
+  const el = document.getElementById('diff-label');
+  const c = cfg[settings.difficulty];
+  el.textContent = c.label;
+  el.style.color = c.color;
 }
 
 // ── Game ──────────────────────────────────────────────────────────────────────
@@ -1010,7 +1031,7 @@ function setDifficulty(d) {
   document.querySelectorAll('#set-diff-group .chip').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.diff === d);
   });
-  eq = nextEq(); render();
+  eq = nextEq(); render(); updateDiffLabel();
 }
 
 function toggleDark(v) {
@@ -1028,6 +1049,7 @@ window.addEventListener('popstate', () => {
 // ── Init ──────────────────────────────────────────────────────────────────────
 loadSettings();
 applyDarkMode();
+updateDiffLabel();
 eq = nextEq();
 render();
 
