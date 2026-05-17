@@ -642,7 +642,7 @@ function nextEq() {
   } else {
     b = rand(d.divD[0], d.divD[1]); const q = rand(d.divQ[0], d.divQ[1]); a = b * q; answer = q;
   }
-  return { display: a + ' ' + op + ' ' + b, answer };
+  return { display: a + ' ' + op + ' ' + b, answer, a, b, operator: op };
 }
 
 // ── Hint generation ──────────────────────────────────────────────────────────
